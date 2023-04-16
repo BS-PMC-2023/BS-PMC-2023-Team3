@@ -154,7 +154,8 @@ h1{
 }
 
 .bio-desk {
-    width: 60%;
+    width: 50%;
+    text-align: right;
 }
 
 .bio-desk h4 {
@@ -168,14 +169,6 @@ h1{
 
 .bio-desk h4.red {
     color: #e26b7f;
-}
-
-.bio-desk h4.green {
-    color: #97be4b;
-}
-
-.bio-desk h4.purple {
-    color: #caa3da;
 }
 
 .file-pos {
