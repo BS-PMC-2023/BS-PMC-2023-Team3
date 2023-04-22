@@ -44,13 +44,21 @@ a {
   background-position: center center;
   background-repeat: no-repeat; }
 
+
+  .btn-Logout {
+    box-shadow:0 0 0 1px #c63702 inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #C24032, 0 8px 0 1px rgba(0,0,0,0.4), 0 8px 8px 1px rgba(0,0,0,0.5);
+    background-color:#c63702;
+    position: relative;
+    bottom: -415px;
+    right: 0px;
+}  
 .site-navbar {
   margin-bottom: 0px;
   z-index: 1999;
   position: relative;
   top: 0;
-  width: 100%;
-  padding: 1rem;
+  width: 85%;
+  padding: 0rem;
   position: absolute; }
   @media (max-width: 991.98px) {
     .site-navbar {
@@ -60,9 +68,10 @@ a {
     position: absolute;
     right: 0px; }
   .site-navbar .site-logo {
+    width: 225%;
     margin: 0;
     padding: 0;
-    font-size: 1rem; }
+    font-size: 2rem; }
     .site-navbar .site-logo a {
       text-transform: uppercase;
       color: #000;

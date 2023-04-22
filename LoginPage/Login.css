@@ -4,5 +4,7 @@ body{
 }
 label{
     text-align: right;
-
+}
+input{
+    text-align: right;
 }
