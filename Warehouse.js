@@ -64,3 +64,14 @@ async function addItem(req, response) {
     });
 
 }
+
+async function deleteItem(req, response) {
+    const db = await connection();
+    db.execute('DELETE FROM items WHERE NAME= :1 AND S_N= :2', [req.query.name, req.query.s_n], (err, res) => {
+        if (err) {
+            response.status(400).json({ message: "Something went wrong" });
+        } else {
+            response.status(200).json({ message: "delete successfully!" });
+        }
+    });
+}
