@@ -75,3 +75,16 @@ async function deleteItem(req, response) {
         }
     });
 }
+
+async function getSize(req, response){
+    const db = await connection();
+    let sql = "SELECT COUNT(*) FROM " + [req.query.table];
+    db.execute(sql, [],(err, res)=> {
+        if (!err) {
+             response.json(res.rows[0][0])
+        } else {
+                console.log(err);
+                response.status(400).json({ message: "Somting went wrong" });
+        }
+        });
+    }
