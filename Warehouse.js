@@ -1,6 +1,6 @@
 
 
-
+router.get('/watchItems', getAllItems);
 
 async function UpdateItem(req, response) {
     const db = await connection();
@@ -86,5 +86,27 @@ async function getSize(req, response){
                 console.log(err);
                 response.status(400).json({ message: "Somting went wrong" });
         }
+        });
+    }
+
+    async function getAllItems(req, response) {
+        const db = await connection();
+        db.execute('select * from items' ,[], (err, res) => {
+        console.log(res);
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "no" });
+        }
+            if (!err) {
+                let array = [];
+               for(let i=0;i<res.rows.length;i++)
+                {
+                    let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], model:  res.rows[i][3], ancillary_items:  res.rows[i][4], amount: res.rows[i][5], status: res.rows[i][6], precautions: res.rows[i][7], borrow_date: res.rows[i][8], return_date: res.rows[i][9]}
+                    array.push(obj);
+                }
+                return response.status(200).json(array);
+            } else {
+                console.log(err);
+                response.status(400).json({ message: "Error" });
+            }
         });
     }
