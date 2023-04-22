@@ -1,5 +1,6 @@
 router.post('/register', addUser);
 router.get('/watchUsers', getAllUsers);
+router.get('/watchUser', getUser);
 
 async function getAllUsers(req, response) {
     const db = await connection();
@@ -20,6 +21,23 @@ async function getAllUsers(req, response) {
             console.log(err);
             response.status(400).json({ message: "Error" });
         }
+    });
+}
+
+
+async function getUser(req, response) {
+    const db = await connection();
+
+    db.execute("select * from users where username= :1", [req.query.USERNAME],(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "user is not found" });
+    }
+    if (!err) {
+         response.json(res.rows)
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
     });
 }
 
