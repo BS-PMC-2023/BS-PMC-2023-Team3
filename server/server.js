@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 const env = require('dotenv')
+const users = require("./Controller/Users.js").router;
 
 // DONT DELETE!
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(cors());
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/users', users);
 
 
 // END DONT DELETE!
