@@ -2,6 +2,8 @@
 
 router.get('/watchItems', getAllItems);
 router.get('/watchItemForCat', getItemForCat);
+router.get('/watchItemForStatus', getItemForStatus);
+router.get('/getsize', getSize);
 
 async function UpdateItem(req, response) {
     const db = await connection();
@@ -124,6 +126,22 @@ async function getSize(req, response){
         } else {
                 console.log(err);
                 response.status(400).json({ message: "Sometihng went wrong" });
+        }
+        });
+    }
+
+    async function getItemForStatus(req, response) {
+        const db = await connection();
+        let status= [req.query.STATUS];
+        db.execute("SELECT * FROM items WHERE STATUS= :1", status ,(err, res)=> {
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "items " +status+" is not found" });
+        }
+        if (!err) {
+             response.json(res.rows)
+        } else {
+                console.log(err);
+                response.status(400).json({ message: "Somting went wrong" });
         }
         });
     }
