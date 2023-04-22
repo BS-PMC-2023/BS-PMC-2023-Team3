@@ -2,7 +2,6 @@ const connection = require('../mySQL');
 const express = require('express');
 const router = express.Router();
 
-
 router.post('/login', login);
 
 async function login(req, response) {
