@@ -8,4 +8,5 @@ for(let i=0;i<4;i++){
 var clone = s[0].cloneNode(true);
 
 d[0].appendChild(clone);
+
 }
