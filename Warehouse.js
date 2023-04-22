@@ -35,3 +35,32 @@ async function UpdateItem(req, response) {
         }
     });
 }
+
+async function addItem(req, response) {
+    const db = await connection();
+    let itemObj = req.body;
+    console.log(itemObj);
+    let sql = `INSERT INTO items (NAME, S_N, CATEGORY)
+            VALUES(:1,:2, :3)`;
+
+    let values = [
+        itemObj.NAME,
+        itemObj.S_N,
+        itemObj.CATEGORY
+    ];
+
+    db.execute(sql, values,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "ERROR" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                return response.json({ message: "New item successfully added" });
+            } else {
+                return response.status(400).json({ message: "Something went wrong" });
+            }
+        }
+    });
+
+}
