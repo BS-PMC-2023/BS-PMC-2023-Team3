@@ -1,6 +1,7 @@
 
 
 router.get('/watchItems', getAllItems);
+router.get('/watchItemForCat', getItemForCat);
 
 async function UpdateItem(req, response) {
     const db = await connection();
@@ -108,5 +109,21 @@ async function getSize(req, response){
                 console.log(err);
                 response.status(400).json({ message: "Error" });
             }
+        });
+    }
+
+    async function getItemForCat(req, response) {
+        const db = await connection();
+    
+        db.execute("select * from items where CATEGORY= :1", [req.query.CATEGORY],(err, res)=> {
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "category is not found" });
+        }
+        if (!err) {
+             response.json(res.rows)
+        } else {
+                console.log(err);
+                response.status(400).json({ message: "Sometihng went wrong" });
+        }
         });
     }
