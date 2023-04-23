@@ -1,9 +1,9 @@
 
 
 
-/*const mysql = require('mysql');
 
-function validateCredentials(email, password) {
+
+/*function validateCredentials(email, password) {
     // Regular expression pattern for matching a valid email
     const emailPattern = /^([a-zA-Z0-9_-]+)@ac\.sce\.ac\.il$/;
   
