@@ -1,33 +1,39 @@
 pipeline {
-  agent any
-  environment {
-    DOCKER_COMPOSE_VERSION = '1.29.2'
-  }
-  stages {
-    stage('Build Docker Images') {
-      steps {
-        script {
-          docker.build('client', './client')
-          docker.build('server', './server')
+    agent {
+        docker {
+            image 'node:14'
+            args '-u root'
         }
-      }
     }
-    stage('Run Docker Containers with Docker Compose') {
-      steps {
-        sh 'curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose'
-        sh 'chmod +x docker-compose'
-        sh './docker-compose up -d'
-      }
+    
+    environment {
+        DOCKER_REGISTRY = 'your-docker-registry.com'
+        DOCKER_REGISTRY_CREDENTIALS = credentials('docker-registry-credentials')
+        DOCKER_IMAGE_NAME = 'your-image-name'
     }
-    stage('Stop Docker Containers with Docker Compose') {
-      steps {
-        sh './docker-compose down'
-      }
+    
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry(DOCKER_REGISTRY, DOCKER_REGISTRY_CREDENTIALS) {
+                        def app = docker.build("${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                        app.push()
+                    }
+                }
+            }
+        }
     }
-  }
-  post {
-    always {
-      sh 'docker images -q | xargs docker rmi -f || true'
-    }
-  }
 }
