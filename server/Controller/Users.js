@@ -10,22 +10,22 @@ router.get('/watchUser', getUser);
 
 async function login(req, response) {
     const db = await connection();
-    db.execute('select * from users where username = :1', [req.body.USERNAME], (err, res) => {
+    db.execute('select * from users where email = :1', [req.body.EMAIL], (err, res) => {
         if (res && res.rows[0]) {
-            if (res.rows[0][5]==req.body.USERNAME && res.rows[0][6]==req.body.PASSWORD) {            
+            if (res.rows[0][2]==req.body.EMAIL && res.rows[0][6]==req.body.PASSWORD) {            
                 response.status(200).contentType('application/json').json({
                     "message": "login ok!"
                 })
             }
             else {
                 response.status(400).contentType('application/json').json({
-                    "message": "Wrong username or password"
+                    "message": "Wrong email or password"
                 })
             }
         }
         else {
             response.status(400).contentType('application/json').json({
-                "message": "Wrong username or password"
+                "message": "Wrong email or password"
             })
         }
     })
