@@ -2,8 +2,8 @@
 const oracledb = require('oracledb');
 oracledb.autoCommit = true;
 const connection = async ()=> (oracledb.getConnection({
-    user          : 'efratt', 
-    password      : '123456',
+    user          : 'yovel', 
+    password      : 'yovel1201',
     connectString : 'localhost/xe'
 }));
 
