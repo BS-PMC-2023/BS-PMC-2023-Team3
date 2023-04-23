@@ -16,13 +16,8 @@ async function UpdateItem(req, response) {
     let status = req.body.STATUS;
     let item_name = req.body.NAME;
     let item_sn= req.body.S_N;
-
-    if(status == 'FAULTY')
-    {
-        sql = "UPDATE items SET status= :1 WHERE NAME= :2 AND S_N= :3";
-        val = [status, item_name, item_sn];
-    }
-    else if(status == 'OUT')
+    
+    if(status == 'OUT')
     {
         let bor_date = req.body.BORROW_DATE;
         let ret_date = req.body.RETURN_DATE;
@@ -34,7 +29,6 @@ async function UpdateItem(req, response) {
         sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3 WHERE NAME= :4 AND S_N= :5";
         val = [status, 'NULL' , 'NULL', item_name, item_sn];
     }
-    console.log(val);
     db.execute(sql, val, (err, res) => {
         if (err) {
             response.status(400).json({ message: "Something went wrong" });
@@ -48,13 +42,14 @@ async function addItem(req, response) {
     const db = await connection();
     let itemObj = req.body;
     console.log(itemObj);
-    let sql = `INSERT INTO items (NAME, S_N, CATEGORY)
-            VALUES(:1,:2, :3)`;
+    let sql = `INSERT INTO items (NAME, S_N, CATEGORY, STATUS)
+            VALUES( :1, :2, :3, :4)`;
 
     let values = [
         itemObj.NAME,
         itemObj.S_N,
-        itemObj.CATEGORY
+        itemObj.CATEGORY,
+        'IN'
     ];
 
     db.execute(sql, values,  (err, res) => {
@@ -75,7 +70,7 @@ async function addItem(req, response) {
 
 async function deleteItem(req, response) {
     const db = await connection();
-    db.execute('DELETE FROM items WHERE NAME= :1 AND S_N= :2', [req.query.name, req.query.s_n], (err, res) => {
+    db.execute('DELETE FROM items WHERE NAME= :1 AND S_N= :2', [req.body.NAME, req.body.S_N], (err, res) => {
         if (err) {
             response.status(400).json({ message: "Something went wrong" });
         } else {
@@ -108,7 +103,7 @@ async function getSize(req, response){
                 let array = [];
                for(let i=0;i<res.rows.length;i++)
                 {
-                    let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], model:  res.rows[i][3], ancillary_items:  res.rows[i][4], amount: res.rows[i][5], status: res.rows[i][6], precautions: res.rows[i][7], borrow_date: res.rows[i][8], return_date: res.rows[i][9]}
+                    let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
                     array.push(obj);
                 }
                 return response.status(200).json(array);
