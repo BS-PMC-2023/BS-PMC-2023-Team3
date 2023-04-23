@@ -6,7 +6,7 @@ const app = require('../../server');
 describe("POST /users/login", () => {
     it("It should respond 'login ok!'", async () => {
         const User = await request(app).post("/users/login").send({
-            USERNAME: 'EFRAT',
+            USERNAME: 'EFRAT22',
             PASSWORD: '123456'
         });
         expect(User.body.message).toBe("login ok!");
@@ -29,21 +29,21 @@ describe("POST /users/login", () => {
 });
 
 
-// describe("POST /users/register", () => {
-//     it("It should respond 'New user created successfully'", async () => {
-//         const newUser = await request(app).post("/users/register").send({
-//             USERNAME: 'ddi',
-//             PASSWORD: '123',
-//             FIRSTNAME: 'dori',
-//             LASTNAME: 'fourer',
-//             EMAIL: 'ddi@gmail.com',
-//             BIRTHDAY: '01/01/2000'
-//         });
-//         expect(newUser.body.message).toBe("New user created successfully");
-//         expect(newUser.statusCode).toBe(200);
+describe("POST /users/register", () => {
+    it("It should respond 'New user created successfully'", async () => {
+        const newUser = await request(app).post("/users/register").send({
+            USERNAME: 'ddi',
+            PASSWORD: '123',
+            FIRSTNAME: 'dori',
+            LASTNAME: 'fourer',
+            EMAIL: 'ddi@gmail.com',
+            BIRTHDAY: '01/01/2000'
+        });
+        expect(newUser.body.message).toBe("New user created successfully");
+        expect(newUser.statusCode).toBe(200);
 
-//     });
-// });
+    });
+});
 
 describe("POST /users/register", () => {
     it("It should respond 'Existing username or existing email'", async () => {
@@ -58,5 +58,19 @@ describe("POST /users/register", () => {
         expect(newUser.body.message).toBe("Existing username or existing email");
         expect(newUser.statusCode).toBe(400);
 
+    });
+});
+
+describe("GET /users/watchUsers", () => {
+    it("It should respond with an array of users", async () => {
+        const response = await request(app).get("/users/watchUsers");
+        expect(response.body[0]).toHaveProperty("firstname");
+        expect(response.body[0]).toHaveProperty("lastname");
+        expect(response.body[0]).toHaveProperty("email");
+        expect(response.body[0]).toHaveProperty("birthday");
+        expect(response.body[0]).toHaveProperty("title");
+        expect(response.body[0]).toHaveProperty("username");
+        expect(response.body[0]).toHaveProperty("password");
+        expect(response.statusCode).toBe(200);
     });
 });
