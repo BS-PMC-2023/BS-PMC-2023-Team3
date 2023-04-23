@@ -1,6 +1,6 @@
 body{margin-top:20px;
     background-color:#eee;
-    }
+}
     .card {
         margin-bottom: 24px;
         box-shadow: 0 2px 3px #e4e8f0;
@@ -68,3 +68,4 @@ body{margin-top:20px;
         vertical-align: baseline;
         border-radius: 0.75rem;
     }
+    
