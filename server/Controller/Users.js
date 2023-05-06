@@ -14,7 +14,12 @@ async function login(req, response) {
         if (res && res.rows[0]) {
             if (res.rows[0][2]==req.body.EMAIL && res.rows[0][6]==req.body.PASSWORD) {            
                 response.status(200).contentType('application/json').json({
-                    "message": "login ok!"
+                    "message": "login ok!",
+                    "data" :{
+                        USERNAME: res.rows[0].USERNAME,
+                        TITLE: res.rows[0].TITLE,
+                        EMAIL: res.rows[0].EMAIL
+                    },
                 })
             }
             else {
