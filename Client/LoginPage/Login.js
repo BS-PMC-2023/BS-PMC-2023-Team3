@@ -32,12 +32,9 @@ async function login() {
     sessionStorage.setItem("role", body.data.role);
     sessionStorage.setItem("phone_number", body.data.phone_number)
     //data.data keeps username and role, lets use the role to see to where to navigate
-    switch (body.data.role) {
-        case 1:
-            window.location.href = "HomePage/HP.html";
-            break;
-    }
-
+  
+    window.location.href = "HomePage/HP.html";
+     
 }
 
 

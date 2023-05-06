@@ -43,6 +43,8 @@ app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/LoginPage/Login.html'));
 });
 
+
+
 // Todo: Add Routes
 
 app.use(bodyParser.urlencoded({ extended: false }));
