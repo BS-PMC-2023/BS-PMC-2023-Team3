@@ -27,7 +27,7 @@ app.get('/login', function (req, res) {
 
 //? Register Page
 app.use(express.static(path.join(__dirname, '/public/client/Register_page')))
-app.get('/signup', function (req, res) {
+app.get('/register', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/Register_page/Register.html'));
 });
 

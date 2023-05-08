@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Table with Add/Remove Buttons</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+        color: #333;
+      }
+      .add-row-btn,
+      .remove-row-btn {
+        padding: 5px 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .remove-row-btn {
+        background-color: #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="myTable">
+      <thead>
+        <tr>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="name[]" /></td>
+          <td><input type="text" name="email[]" /></td>
+          <td><button class="add-row-btn">Add</button></td>
+          <td><button class="remove-row-btn">remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+      // Add Row Functionality
+      document
+        .querySelector("#myTable")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("add-row-btn")) {
+            const tbody = document.querySelector("#myTable tbody");
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td><input type="text" name="name[]"></td><td><input type="text" name="email[]"></td><td><button class="add-row-btn">Add</button><button class="remove-row-btn">Remove</button></td>`;
+            tbody.appendChild(tr);
+          }
+        });
+
+      // Remove Row Functionality
+      document
+        .querySelector("#myTable")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("remove-row-btn")) {
+            event.target.closest("tr").remove();
+          }
+        });
+    </script>
+  </body>
+</html>
