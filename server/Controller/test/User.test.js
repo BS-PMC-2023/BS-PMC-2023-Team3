@@ -6,7 +6,7 @@ const app = require('../../server');
 describe("POST /users/login", () => {
     it("It should respond 'login ok!'", async () => {
         const User = await request(app).post("/users/login").send({
-            USERNAME: 'EFRAT22',
+            USERNAME: 'yamb1254',
             PASSWORD: '123456'
         });
         expect(User.body.message).toBe("login ok!");

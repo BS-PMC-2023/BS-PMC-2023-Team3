@@ -43,6 +43,14 @@ app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/LoginPage/Login.html'));
 });
 
+//? table Page
+app.use(express.static(path.join(__dirname, '/public/client/Table_items')))
+app.get('/table', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/Table_items/table.html'));
+});
+
+
+
 // Todo: Add Routes
 
 app.use(bodyParser.urlencoded({ extended: false }));

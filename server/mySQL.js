@@ -1,4 +1,3 @@
-
 const oracledb = require('oracledb');
 oracledb.autoCommit = true;
 const connection = async ()=> (oracledb.getConnection({
