@@ -1,12 +1,11 @@
 
 
 async function login() {
-    let user = document.getElementById("USERNAME").value;
+    let email = document.getElementById("EMAIL").value;
     let pass = document.getElementById("PASSWORD").value;
-    let ip = sessionStorage.getItem("ip")
     //fetch
     //call for POST to the url:
-    let response = await fetch(`http://localhost:3001/LoginPage/Login.html`, {
+    let response = await fetch('http://localhost:3001/users/login', {
         //post
         method: 'POST',
         headers: {
@@ -14,8 +13,8 @@ async function login() {
         },
         //this is the stuff we refer to as: req.body in the backend!!!!!
         body: JSON.stringify({
-            username: user,
-            password: pass
+            EMAIL: email,
+            PASSWORD: pass
         })
     })
     //get data from backend response as json!
@@ -28,15 +27,12 @@ async function login() {
         return;
     }
     //if im here i have the data so lets save it!!!
-    sessionStorage.setItem("user", body.data.username);
-    sessionStorage.setItem("role", body.data.role);
-    sessionStorage.setItem("phone_number", body.data.phone_number)
+    sessionStorage.setItem("username", body.data.USERNAME);
+    sessionStorage.setItem("title", body.data.TITLE);
+    sessionStorage.setItem("email", body.data.EMAIL)
     //data.data keeps username and role, lets use the role to see to where to navigate
-    switch (body.data.role) {
-        case 1:
-            window.location.href = "HomePage/HP.html";
-            break;
-    }
+    
+    window.location.href = "http://localhost:3001";
 
 }
 

@@ -16,9 +16,9 @@ async function login(req, response) {
                 response.status(200).contentType('application/json').json({
                     "message": "login ok!",
                     "data" :{
-                        USERNAME: res.rows[0].USERNAME,
-                        TITLE: res.rows[0].TITLE,
-                        EMAIL: res.rows[0].EMAIL
+                        USERNAME: res.rows[0][5],
+                        TITLE: res.rows[0][4],
+                        EMAIL: res.rows[0][2]
                     },
                 })
             }
@@ -54,13 +54,13 @@ async function addUser(req, response) {
     db.execute(sql, values,  (err, res) => {
         if (err) {
             console.log(err);
-            return response.status(400).json({ message: "Existing username or existing email" });
+            return response.status(400).json({flag:0, message: "Existing username or existing email" });
         } else {
             console.log(res)
             if (res.rowsAffected > 0) {
-                return response.json({ message: "New user created successfully" });
+                return response.json({flag:1, message: "New user created successfully" });
             } else {
-                return response.status(400).json({ message: "Something went wrong" });
+                return response.status(400).json({ flag:0, message: "Something went wrong" });
             }
         }
     });
