@@ -1,5 +1,9 @@
-
-async function table() {
+const itemsPerPage = 8;
+let currentPage = 1;
+function pagenum(num){
+    table(num)
+}
+async function table(page) {
     //call for get to the url:
     let response = await fetch('http://localhost:3001/warehouse/watchItemForStatus?STATUS=IN', {
         //Get
@@ -12,11 +16,15 @@ async function table() {
     let body = await response.json()
 
     // (C1) GET THE SOURCE & DESTINATION ELEMENTS
-    var d = document.getElementsByClassName("row");
-    document.getElementById("size").innerText = "("+body.length+")";
-    //if I dont get a variable called data from the back, something is wrong!
+    var d = document.getElementById("12item");
 
-body.forEach((item) => {
+const startIndex = (page - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const paginatedItems = body.slice(startIndex, endIndex);
+console.log(itemsPerPage);
+d.innerHTML = '';
+
+paginatedItems.forEach((item) => {
   const itemHtml = `
     <div class="col-xl-3 col-sm-6">
       <div class="card">
@@ -46,9 +54,29 @@ body.forEach((item) => {
         </div>
       </div>
     </div>`
-
-    d[0].innerHTML += itemHtml;
+    d.innerHTML += itemHtml;
 });
 }
 
-table();
+async function nextpage(){
+    //call for get to the url:
+    let response = await fetch('http://localhost:3001/warehouse/watchItemForStatus?STATUS=IN', {
+        //Get
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    //get data from backend response as json!
+    let body = await response.json()
+
+    document.getElementById("size").innerText = "("+body.length+")"; 
+    //if I dont get a variable called data from the back, something is wrong!
+    let tot = Math.ceil(body.length/itemsPerPage);
+    for(let i = 0 ; i <tot ;i++){
+        const pageitemjtml = `<li class="page-item" onclick = "pagenum(${i+1})"><a href="#" class="page-link">${i+1}</a></li>`
+        document.getElementById("pagenum").innerHTML += pageitemjtml
+    }
+}
+nextpage();
+table(currentPage);

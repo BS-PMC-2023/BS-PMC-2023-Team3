@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/add', addItem);
 router.post('/UpdateItem', UpdateItem);
-router.delete('/deleteItem', deleteItem);
+router.post('/deleteItem', deleteItem);
 router.get('/watchItems', getAllItems);
 router.get('/watchItemForCat', getItemForCat);
 router.get('/watchItemForStatus', getItemForStatus);
@@ -70,11 +70,12 @@ async function addItem(req, response) {
 
 async function deleteItem(req, response) {
     const db = await connection();
+
     db.execute('DELETE FROM items WHERE NAME= :1 AND S_N= :2', [req.body.NAME, req.body.S_N], (err, res) => {
         if (err) {
-            response.status(400).json({ message: "Something went wrong" });
+            response.status(400).json({ message: "Something went wrong" ,status:400});
         } else {
-            response.status(200).json({ message: "delete successfully!" });
+            response.status(200).json({ message: "delete successfully!",status:200});
         }
     });
 }

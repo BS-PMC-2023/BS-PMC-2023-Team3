@@ -10,6 +10,8 @@ const warehouse = require("./Controller/Warehouse.js").router;
 const path = require('path')
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Configuring body parser middleware
 
@@ -43,18 +45,23 @@ app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/LoginPage/Login.html'));
 });
 
-//? table Page
+//? table item Page
 app.use(express.static(path.join(__dirname, '/public/client/Table_items')))
 app.get('/table', function (req, res) {
-  res.sendFile(path.join(__dirname, '/public/client/Table_items/table.html'));
+  res.sendFile(path.join(__dirname, '/public/client/Table_items/tableitem.html'));
+});
+
+//? table podcast Page
+app.use(express.static(path.join(__dirname, '/public/client/Table_podcast')))
+app.get('/table', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/Table_items/Podcast.html'));
 });
 
 
 
 // Todo: Add Routes
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
 app.use('/users', users);
 app.use('/warehouse', warehouse);
 
