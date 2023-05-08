@@ -112,7 +112,23 @@
                     </ul>
                 </div>
                 <div>
-                    <a href="#" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-primary"><i class="bx bx-plus me-1"></i> הוסף פריט</a>
+                    <a href="#" data-bs-target=".add-new" class="btn btn-primary" onclick="openForm()"><i class="bx bx-plus me-1"></i> הוסף פריט</a>
+                    <div class="form-popup" id="myForm">
+                      <form class="form-container">
+                        <h2>הוספת פריט</h2>
+                        <label for="name"><b>שם פריט</b></label>
+                        <input type="text" placeholder="Enter Name" name="name" id ="name" required>
+                    
+                        <label for="email"><b>מספר סידורי</b></label>
+                        <input type="text" placeholder="Enter SN" name="SN" id ="SN" required>
+
+                        <label for="email"><b>קטגוריה</b></label>
+                        <input type="text" placeholder="Enter CATEGORY" name="CATEGORY" id ="CATEGORY" required>
+
+                        <button type="button" class="btn btn-primary" onclick = "addI()" >Submit</button>
+                        <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+                      </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,12 +142,6 @@
         <div class="col-sm-6">
             <div class="float-sm-end">
                 <ul class="pagination mb-sm-0" id = "pagenum">
-                    <li class="page-item disabled">
-                        <a href="#" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                    </li>
-                    <li class="page-item">
-                        <a href="#" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>

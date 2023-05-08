@@ -95,7 +95,7 @@ async function nextpage(){
         },
     })
     //get data from backend response as json!
-    let body = await response.json()
+    let body = await response.json();
 
     document.getElementById("size").innerText = "("+body.length+")"; 
     //if I dont get a variable called data from the back, something is wrong!
@@ -104,6 +104,35 @@ async function nextpage(){
         const pageitemjtml = `<li class="page-item" onclick = "pagenum(${i+1})"><a href="#" class="page-link">${i+1}</a></li>`
         document.getElementById("pagenum").innerHTML += pageitemjtml
     }
+}
+
+function openForm() {
+    document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+}
+
+async function addI(name,s_n,cat){
+    name = document.querySelector('#name').value;
+    s_n = document.querySelector('#SN').value;
+    cat = document.querySelector('#CATEGORY').value;
+    let response = await fetch('http://localhost:3001/warehouse/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            NAME:name,
+            S_N:s_n,
+            CATEGORY:cat
+        })
+    })
+    //get data from backend response as json!
+    let body = await response.json();
+    alert(body.message);
+    closeForm();
 }
 
 
