@@ -7,7 +7,7 @@ router.post('/UpdateStatusOrderPS', UpdateStatusOrderPS);
 router.get('/getAllOrdersPS', getAllOrdersPS);
 router.get('/getAllOrderPSForUser', getAllOrderPSForUser);
 router.post('/UpdateStatusOrderItem', UpdateStatusOrderItem);
-
+router.get('/getAllOrdersItem', getAllOrdersItem);
 
 async function addOrderForPS(req, response) {
     const db = await connection();
@@ -134,6 +134,33 @@ async function UpdateStatusOrderItem(req, response) {
         } else {
             response.status(200).json({ message: "update successfully!" });
         }
+    });
+}
+
+async function getAllOrdersItem(req, response) {
+    const db = await connection();
+    db.execute("SELECT * FROM orders" ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((orders) => {
+            let obj = {
+                USERNAME: orders[0], 
+                NAMEITEM: orders[1],
+                S_N: orders[2],
+                BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
+                RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
+                STATUS: orders[5]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
     });
 }
 

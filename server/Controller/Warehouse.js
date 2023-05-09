@@ -14,9 +14,7 @@ router.get('/getsize', getSize);
 async function UpdateItem(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS;
-    let item_name = req.body.NAME;
-    let item_sn= req.body.S_N;
+    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N;
     
     if(status == 'OUT')
     {
