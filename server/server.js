@@ -13,9 +13,15 @@ app.use(cors());
 
 // Configuring body parser middleware
 
-//? HomePage
+//? HomePageBeforCon
 app.use(express.static(path.join(__dirname, '/public/client/HomePage')))
 app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/HomePage/HPBeforCon.html'));
+});
+
+//? HomePage
+app.use(express.static(path.join(__dirname, '/public/client/HomePage')))
+app.get('/Connected', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/HomePage/HP.html'));
 });
 

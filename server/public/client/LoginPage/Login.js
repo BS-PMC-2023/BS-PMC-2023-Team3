@@ -32,7 +32,7 @@ async function login() {
     sessionStorage.setItem("email", body.data.EMAIL)
     //data.data keeps username and role, lets use the role to see to where to navigate
     
-    window.location.href = "http://localhost:3001";
+    window.location.href = "http://localhost:3001/Connected";
 
 }
 
