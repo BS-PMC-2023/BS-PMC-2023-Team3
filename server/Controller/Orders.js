@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.post('/addOrderForPS', addOrderForPS);
 router.get('/getAllOrdersPS', getAllOrdersPS);
+router.get('/getAllOrderPSForUser', getAllOrderPSForUser);
 
 async function addOrderForPS(req, response) {
     const db = await connection();
@@ -52,6 +53,32 @@ async function getAllOrdersPS(req, response) {
                 array.push(obj)
             })
             return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
+
+async function getAllOrderPSForUser(req, response) {
+    const db = await connection();
+    let user= [req.query.USERNAME];
+    db.execute("SELECT * FROM Studio_Podcast WHERE USERNAME= :1", user ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders for " +user+" is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((orders) => {
+            let obj = {
+                USERNAME: orders[0], 
+                TYPE: orders[1],
+                NUM: orders[2],
+                DATE_TIME: orders[3].toLocaleString('he-IL').split('').join('')
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
     } else {
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" });
