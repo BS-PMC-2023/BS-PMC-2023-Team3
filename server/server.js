@@ -7,6 +7,8 @@ const env = require('dotenv');
 const connection = require('./mySQL');
 const users = require("./Controller/Users.js").router;
 const warehouse = require("./Controller/Warehouse.js").router;
+const orders = require("./Controller/Orders.js").router;
+
 const path = require('path')
 
 app.use(cors());
@@ -49,6 +51,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/users', users);
 app.use('/warehouse', warehouse);
+app.use('/orders', orders);
 
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
