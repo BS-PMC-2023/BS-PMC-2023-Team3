@@ -6,6 +6,7 @@ router.post('/addOrderForPS', addOrderForPS);
 router.post('/UpdateStatusOrderPS', UpdateStatusOrderPS);
 router.get('/getAllOrdersPS', getAllOrdersPS);
 router.get('/getAllOrderPSForUser', getAllOrderPSForUser);
+router.post('/UpdateStatusOrderItem', UpdateStatusOrderItem);
 
 
 async function addOrderForPS(req, response) {
@@ -112,5 +113,28 @@ async function getAllOrderPSForUser(req, response) {
     });
 }
 
+async function UpdateStatusOrderItem(req, response) {
+    const db = await connection();
+    let sql, val;
+    let status = req.body.STATUS_ORDER, user = req.body.USERNAME, bor_date = req.body.BORROW_DATE,item_name = req.body.NAMEITEM,item_sn= req.body.S_N;
+    
+    if(status == 'Reject')
+    {
+        sql = "UPDATE orders SET STATUS_ORDER= :1 WHERE USERNAME= :2 AND NAMEITEM= :3 AND S_N= :4 AND BORROW_DATE= to_date(:5,'DD/MM/YYYY')";
+        val = [status, user, item_name, item_sn, bor_date];
+    }
+    if(status == 'Accept') 
+    {
+        sql = "UPDATE orders SET STATUS_ORDER= :1 WHERE USERNAME= :2 AND NAMEITEM= :3 AND S_N= :4 AND BORROW_DATE= to_date(:5,'DD/MM/YYYY')";
+        val = [status, user, item_name, item_sn, bor_date];
+    }
+    db.execute(sql, val, (err, res) => {
+        if (err) {
+            response.status(400).json({ message: "Something went wrong" });
+        } else {
+            response.status(200).json({ message: "update successfully!" });
+        }
+    });
+}
 
 module.exports = { router};
