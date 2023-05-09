@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/addOrderForPS', addOrderForPS);
+router.get('/getAllOrdersPS', getAllOrdersPS);
 
 async function addOrderForPS(req, response) {
     const db = await connection();
@@ -31,6 +32,31 @@ async function addOrderForPS(req, response) {
         }
     });
 
+}
+
+async function getAllOrdersPS(req, response) {
+    const db = await connection();
+    db.execute("SELECT * FROM Studio_Podcast" ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders is not found" });
+    }
+    if (!err) {
+            let array =[];
+            res.rows.map((orders) => {
+                let obj = {
+                    USERNAME: orders[0], 
+                    TYPE: orders[1],
+                    NUM: orders[2],
+                    DATE_TIME: orders[3].toLocaleString('he-IL').split('').join('')
+                }
+                array.push(obj)
+            })
+            return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
 }
 
 module.exports = { router};
