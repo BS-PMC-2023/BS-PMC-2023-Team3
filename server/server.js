@@ -40,6 +40,13 @@ app.get('/register', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/Register_page/Register.html'));
 });
 
+//? StorgeMangerErea
+app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
+app.get('/Storgemanger', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/PersonalErea/WareHouseM.html'));
+});
+
+
 //? Personal Area Page
 app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
 app.get('/profile', function (req, res) {

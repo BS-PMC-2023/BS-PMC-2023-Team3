@@ -91,7 +91,6 @@ OrderTable();
 async function OrderTable() {
 
   const username = sessionStorage.username
-  console.log(sessionStorage.username);
    //call for get to the url:
    let response = await fetch('http://localhost:3001/users/watchUser?USERNAME='+username, {
     //Get

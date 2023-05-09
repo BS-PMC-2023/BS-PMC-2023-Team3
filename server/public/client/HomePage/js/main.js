@@ -85,3 +85,28 @@ $(function() {
 	siteMenuClone();
 
 });
+
+async function ChoosePage() {
+
+	const username = sessionStorage.username
+	const title = sessionStorage.title
+
+	
+	if(title == "null"){
+		window.location.href = "http://localhost:3001/Storgemanger";
+	}
+	else{
+		window.location.href = "http://localhost:3001/profile";
+	}
+	
+  
+  }
+
+  function clearSessionStorage() {
+	sessionStorage.clear();
+	window.location.href = "http://localhost:3001/login";
+  }
+  
+  
+  
+  
