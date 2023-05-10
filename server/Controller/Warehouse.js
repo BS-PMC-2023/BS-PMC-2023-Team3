@@ -9,6 +9,7 @@ router.get('/watchItems', getAllItems);
 router.get('/watchItemForCat', getItemForCat);
 router.get('/watchItemForStatus', getItemForStatus);
 router.get('/getsize', getSize);
+router.get('/getAllPS', getStudiosAndPodcasts);
 
 
 async function UpdateItem(req, response) {
@@ -146,4 +147,27 @@ async function getSize(req, response){
         });
     }
 
+    async function getStudiosAndPodcasts(req, response) {
+        const db = await connection();
+        db.execute('select * from studio_podcast' , (err, res) => {
+        console.log(res);
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "Somting went wrong" });
+        }
+        if (!err) {
+            let array = [];
+            res.rows.map((PS) => {
+                let obj = {
+                    TYPE: PS[0],
+                    NUM: PS[1]
+                }
+                array.push(obj)
+            })
+            return response.status(200).json(array);
+        } else {
+            console.log(err);
+            response.status(400).json({ message: "Error" });
+        }
+    });
+    }
 module.exports = { router};
