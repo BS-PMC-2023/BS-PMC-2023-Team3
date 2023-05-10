@@ -106,21 +106,21 @@ paginatedItems.forEach((item) => {
         <a class="text-muted dropdown-toggle font-size-16" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"><i class="bx bx-dots-horizontal-rounded"></i></a>
         <div class="dropdown-menu dropdown-menu-end">
           <a class="dropdown-item" href="#">עריכה</a>
-          <a class="dropdown-item" href="#" onclick="deleteI('${item[0]}', '${item[1]}', '${id}')">הסרה</a>
+          <a class="dropdown-item" href="#" onclick="deleteI('${item.name}', '${item.s_n}', '${id}')">הסרה</a>
         </div>
       </div>
       <div class="d-flex align-items-center">
         <div><img src="" alt="" class="avatar-md rounded-circle img-thumbnail" /></div>
         <div class="flex-1 ms-3">
-          <h5 class="font-size-16 mb-1" id="name-item"><a href="#" class="text-dark">${item[0]}</a></h5>
-          <span class="badge badge-soft-success mb-0" id="cat">${item[2]}</span>
+          <h5 class="font-size-16 mb-1" id="name-item"><a href="#" class="text-dark">${item.name}</a></h5>
+          <span class="badge badge-soft-success mb-0" id="cat">${item.category}</span>
         </div>
       </div>
       <div class="mt-3 pt-1">
         <p class="text-muted mb-0" id="status"><i class="font-size-15 align-middle pe-2 text-primary"></i>זמין</p>
-        <p class="text-muted mb-0 mt-2" id="amount"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item[1]}</p>
-        <p class="text-muted mb-0 mt-2" id="s-num"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item[4]}</p>
-        <p class="text-muted mb-0 mt-2" id="side"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item[3]}</p>
+        <p class="text-muted mb-0 mt-2" id="amount"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item.s_n}</p>
+        <p class="text-muted mb-0 mt-2" id="s-num"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item.amount}</p>
+        <p class="text-muted mb-0 mt-2" id="side"><i class="font-size-15 align-middle pe-2 text-primary"></i>${item.ancillary_items}</p>
       </div>
       <div class="d-flex gap-2 pt-4">
         <button type="button" class="btn btn-danger" id="safe">הוראות בטיחות</button>
@@ -134,7 +134,7 @@ paginatedItems.forEach((item) => {
                         <label for="email"><b>תאריך החזרה</b></label>
                         <input type="date" format="DD-MM-YYYY" name="SN" id ="return" required>
 
-                        <button type="button" class="btn btn-primary" onclick = "orderI('${item[0]}', '${item[1]}')" >Submit</button>
+                        <button type="button" class="btn btn-primary" onclick = "orderI('${item.name}', '${item.s_n}')" >Submit</button>
                         <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
                       </form>
                     </div>
