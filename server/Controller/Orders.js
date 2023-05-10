@@ -245,7 +245,8 @@ async function getAllOrderItemForUser(req, response) {
                 S_N: orders[2],
                 BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
                 RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
-                STATUS: orders[5]
+                STATUS: orders[5],
+                DAYS : getOrderForStatus(orders[3].toLocaleDateString('he-IL').split('').join(''),orders[4].toLocaleDateString('he-IL').split('').join(''))
             }
             array.push(obj)
         })
@@ -314,4 +315,28 @@ async function getOrderForStatus(req, response) {
     }
     });
 }
+
+function getOrderForStatus(borrow, ret) {
+    borrow = borrow.split('.')[2]+"/"+borrow.split('.')[1]+"/"+borrow.split('.')[0];
+    console.log(borrow);
+    ret = ret.split('.')[2]+"/"+ret.split('.')[1]+"/"+ret.split('.')[0];
+    console.log(ret);
+  const a = new Date(borrow),
+      b = new Date(ret),
+      difference = dateDiffInDays(a, b);
+
+  return difference;
+}
+
+
+function dateDiffInDays(a, b) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    const utc1 = Date.UTC( a.getFullYear(), a.getMonth(),a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(),b.getDate());
+  
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+  
+
 module.exports = { router};
