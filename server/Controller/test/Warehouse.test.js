@@ -45,7 +45,7 @@ describe("POST /warehouse/UpdateItem", () => {
 
 describe("DELETE /warehouse/deleteItem", () => {
     it("It should respond 'delete successfully!'", async () => {
-        const Item = await request(app).delete("/warehouse/deleteItem").send({
+        const Item = await request(app).post("/warehouse/deleteItem").send({
             NAME: 'Sony A7III',
             S_N: '4476762'
         });
@@ -69,7 +69,7 @@ describe("POST /warehouse/add", () => {
 });
 
 describe("GET /warehouse/watchItems", () => {
-    it("It should respond with an array of pets", async () => {
+    it("It should respond with an array of items", async () => {
         const response = await request(app).get("/warehouse/watchItems");
         expect(response.body[0]).toHaveProperty("name");
         expect(response.body[0]).toHaveProperty("s_n");
