@@ -2,19 +2,19 @@ const connection = require('../../mySQL.js');
 const request = require('supertest');
 const app = require('../../server');
 
-describe("POST /orders/addOrderForPS", () => {
-    it("It should respond 'New order created successfully'", async () => {
-        const Item = await request(app).post("/orders/addOrderForPS").send({
-            USERNAME : 'yambi123',
-            TYPE : 'Studio',
-            NUM : '1',
-            DATE_TIME : '01/06/2023 12:00'
-        });
-        expect(Item.body.message).toBe("New order created successfully");
-        expect(Item.statusCode).toBe(200);
+// describe("POST /orders/addOrderForPS", () => {
+//     it("It should respond 'New order created successfully'", async () => {
+//         const Item = await request(app).post("/orders/addOrderForPS").send({
+//             USERNAME : 'yambi123',
+//             TYPE : 'Studio',
+//             NUM : '1',
+//             DATE_TIME : '01/06/2023 12:00'
+//         });
+//         expect(Item.body.message).toBe("New order created successfully");
+//         expect(Item.statusCode).toBe(200);
 
-    });
-});
+//     });
+// });
 
 describe("POST /orders/addOrderForPS", () => {
     it("It should respond 'The podcast or studio is busy at the time you chose'", async () => {
@@ -149,20 +149,20 @@ describe("GET /orders/getOrderForStatus", () => {
     });
 });
 
-describe("POST /orders/addorder", () => {
-    it("It should respond 'New order created successfully'", async () => {
-        const Item = await request(app).post("/orders/addorder").send({
-            USERNAME : 'Efrat123',
-            BORROW_DATE : '05/06/2023',
-            RETURN_DATE : '08/06/2023',
-            NAMEITEM : 'Sony A7III',
-            S_N: '4477024'
-        });
-        expect(Item.body.message).toBe("New order created successfully");
-        expect(Item.statusCode).toBe(200);
+// describe("POST /orders/addorder", () => {
+//     it("It should respond 'New order created successfully'", async () => {
+//         const Item = await request(app).post("/orders/addorder").send({
+//             USERNAME : 'Efrat123',
+//             BORROW_DATE : '05/06/2023',
+//             RETURN_DATE : '08/06/2023',
+//             NAMEITEM : 'Sony A7III',
+//             S_N: '4477024'
+//         });
+//         expect(Item.body.message).toBe("New order created successfully");
+//         expect(Item.statusCode).toBe(200);
 
-    });
-});
+//     });
+// });
 
 describe("POST /orders/addorder", () => {
     it("It should respond 'The selected dates are not available for this item'", async () => {

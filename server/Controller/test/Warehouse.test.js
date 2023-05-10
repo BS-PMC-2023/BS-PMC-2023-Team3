@@ -68,9 +68,25 @@ describe("POST /warehouse/add", () => {
     });
 });
 
-describe("GET /warehouse/watchItems", () => {
+// describe("GET /warehouse/watchItems", () => {
+//     it("It should respond with an array of items", async () => {
+//         const response = await request(app).get("/warehouse/watchItems");
+//         expect(response.body[0]).toHaveProperty("name");
+//         expect(response.body[0]).toHaveProperty("s_n");
+//         expect(response.body[0]).toHaveProperty("category");
+//         expect(response.body[0]).toHaveProperty("ancillary_items");
+//         expect(response.body[0]).toHaveProperty("amount");
+//         expect(response.body[0]).toHaveProperty("status");
+//         expect(response.body[0]).toHaveProperty("precautions");
+//         expect(response.body[0]).toHaveProperty("borrow_date");
+//         expect(response.body[0]).toHaveProperty("return_date");
+//         expect(response.statusCode).toBe(200);
+//     });
+// });
+
+describe("GET /warehouse/watchItemForCat", () => {
     it("It should respond with an array of items", async () => {
-        const response = await request(app).get("/warehouse/watchItems");
+        const response = await request(app).get("/warehouse/watchItemForCat?CATEGORY=CAMERA");
         expect(response.body[0]).toHaveProperty("name");
         expect(response.body[0]).toHaveProperty("s_n");
         expect(response.body[0]).toHaveProperty("category");
@@ -80,6 +96,32 @@ describe("GET /warehouse/watchItems", () => {
         expect(response.body[0]).toHaveProperty("precautions");
         expect(response.body[0]).toHaveProperty("borrow_date");
         expect(response.body[0]).toHaveProperty("return_date");
+        expect(response.statusCode).toBe(200);
+    });
+});
+
+
+describe("GET /warehouse/watchItemForStatus", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/warehouse/watchItemForStatus?STATUS=IN");
+        expect(response.body[0]).toHaveProperty("name");
+        expect(response.body[0]).toHaveProperty("s_n");
+        expect(response.body[0]).toHaveProperty("category");
+        expect(response.body[0]).toHaveProperty("ancillary_items");
+        expect(response.body[0]).toHaveProperty("amount");
+        expect(response.body[0]).toHaveProperty("status");
+        expect(response.body[0]).toHaveProperty("precautions");
+        expect(response.body[0]).toHaveProperty("borrow_date");
+        expect(response.body[0]).toHaveProperty("return_date");
+        expect(response.statusCode).toBe(200);
+    });
+});
+
+describe("GET /warehouse/getAllPS", () => {
+    it("It should respond with an array of podcasts and studios", async () => {
+        const response = await request(app).get("/warehouse/getAllPS");
+        expect(response.body[0]).toHaveProperty("TYPE");
+        expect(response.body[0]).toHaveProperty("NUM");
         expect(response.statusCode).toBe(200);
     });
 });
