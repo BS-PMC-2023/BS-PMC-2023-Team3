@@ -1,11 +1,55 @@
+
 const itemsPerPage = 8;
 let currentPage = 1;
+
+function openFormorder() {
+    document.getElementById("dateForm").style.display = "block";
+}
+
+function closeFormorder() {
+    document.getElementById("dateForm").style.display = "none";
+}
+
+async function orderpodcast(type , num ){
+
+    let date = document.getElementById("date_ps").value;
+    console.log(date)
+    date = date.split('-')[2]+"/"+date.split('-')[1]+"/"+date.split('-')[0];
+    let time = document.getElementById("time_ps").value;
+    console.log(time)
+    const my_date = date + " " + time;
+
+    if(date == null || time == null ){
+        alert("Enter Date and time");
+        return;
+    }    
+
+    const username = sessionStorage.username; 
+    //call for get to the url:
+    let response = await fetch('http://localhost:3001/orders/addOrderForPS', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            USERNAME:username,
+            TYPE:type,
+            NUM:num,
+            DATE_TIME:my_date
+        }) 
+    });
+    //get data from backend response as json!
+    let body = await response.json()
+
+   alert(body.message);
+}
+
 function pagenum(num){
     table(num)
 }
 async function table(page) {
     //call for get to the url:
-    let response = await fetch('http://localhost:3001/warehouse/watchItemForStatus?STATUS=IN', {
+    let response = await fetch('http://localhost:3001/warehouse/getAllPS', {
         //Get
         method: 'GET',
         headers: {
@@ -36,31 +80,36 @@ paginatedItems.forEach((item) => {
       <div class="d-flex align-items-center">
           <div><img src="" alt="" class="avatar-md rounded-circle img-thumbnail" /></div>
           <div class="flex-1 ms-3">
-              <h5 class="font-size-16 mb-1" id = "name-item"><a href="#" class="text-dark">${item[0]}</a></h5>
-              <span class="badge badge-soft-success mb-0" id = "cat">${item[2]}</span>
+              <h5 class="font-size-16 mb-1" id = "name-item"><a href="#" class="text-dark">${item.TYPE}</a></h5>
+              <span class="badge badge-soft-success mb-0" id = "cat">${item.NUM}</span>
           </div>
       </div>
       <div class="mt-3 pt-1">
-          <p class="text-muted mb-0" id = "status"><i class=" font-size-15 align-middle pe-2 text-primary"></i>זמין</p>
-          <p class="text-muted mb-0 mt-2" id = "amount"><i class=" font-size-15 align-middle pe-2 text-primary"></i> ${item[1]}</p>
-          <p class="text-muted mb-0 mt-2" id = "s-num"><i class=" font-size-15 align-middle pe-2 text-primary"></i>${item[4]}</p>
-          <p class="text-muted mb-0 mt-2" id = "side"><i class=" font-size-15 align-middle pe-2 text-primary"></i>${item[3]}</p>
 
-      </div>
       <div class="d-flex gap-2 pt-4">
-          <button type="button" class="btn btn-danger " id = "safe">הוראות בטיחות</button>
-          <button type="button" class="btn btn-primary "> השאלה</button>
+          <button type="button" class="btn btn-primary" onclick ="openFormorder()"> הזמנה</button>
+          <div class="form-popup" id="dateForm">
+                      <form class="form-container">
+                        <input type="date" id="date_ps" required>
+
+                        <input type="time" id="time_ps" required>
+
+                        <button type="button" class="btn btn-primary" onclick = "orderpodcast('${item.TYPE}','${item.NUM}')" >Submit</button>
+                        <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+                      </form>
+                    </div>
       </div>
         </div>
       </div>
     </div>`
     d.innerHTML += itemHtml;
 });
+
 }
 
 async function nextpage(){
     //call for get to the url:
-    let response = await fetch('http://localhost:3001/warehouse/watchItemForStatus?STATUS=IN', {
+    let response = await fetch('http://localhost:3001/warehouse/getAllPS', {
         //Get
         method: 'GET',
         headers: {
@@ -78,5 +127,6 @@ async function nextpage(){
         document.getElementById("pagenum").innerHTML += pageitemjtml
     }
 }
+
 nextpage();
 table(currentPage);

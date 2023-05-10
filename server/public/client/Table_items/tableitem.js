@@ -1,8 +1,56 @@
 const itemsPerPage = 8;
 let currentPage = 1;
+
 function pagenum(num){
     table(num)
 }
+function openFormorder() {
+    document.getElementById("dateForm").style.display = "block";
+}
+
+function closeFormorder() {
+    document.getElementById("dateForm").style.display = "none";
+}
+
+async function orderI(name , s_n  ){
+    const username = sessionStorage.username;
+
+    let borrow = document.getElementById("borrow").value;
+    borrow = borrow.split('-')[2]+"/"+borrow.split('-')[1]+"/"+borrow.split('-')[0];
+    let ret = document.getElementById("return").value;
+    ret = ret.split('-')[2]+"/"+ret.split('-')[1]+"/"+ret.split('-')[0];
+    if( ret == null || borrow ==null){
+        alert("Enter dates");
+    }
+    console.log(name)
+    console.log(s_n)
+    console.log(username)
+
+
+    //call for get to the url:
+    let response = await fetch('http://localhost:3001/orders/addorder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            USERNAME:username,
+            NAMEITEM: name,
+            S_N: s_n,
+            BORROW_DATE:borrow,
+            RETURN_DATE:ret
+        }),
+    });
+    //get data from backend response as json!
+    let body = await response.json()
+
+    if(body.message)
+        alert(body.message);
+    
+    if(body.status == 200)
+        document.getElementById(id).remove();
+}
+
 
 async function deleteI(name , s_n , id ){
 
@@ -76,7 +124,20 @@ paginatedItems.forEach((item) => {
       </div>
       <div class="d-flex gap-2 pt-4">
         <button type="button" class="btn btn-danger" id="safe">הוראות בטיחות</button>
-        <button type="button" class="btn btn-primary">השאלה</button>
+        <button type="button" class="btn btn-primary" onclick="openFormorder()" >השאלה</button>
+        <div>
+                    <div class="form-popup" id="dateForm">
+                      <form class="form-container">
+                        <label for="name"><b>תאריך לקיחה </b></label>
+                        <input type="date" format="DD-MM-YYYY"  name="name" id ="borrow" required>
+                    
+                        <label for="email"><b>תאריך החזרה</b></label>
+                        <input type="date" format="DD-MM-YYYY" name="SN" id ="return" required>
+
+                        <button type="button" class="btn btn-primary" onclick = "orderI('${item[0]}', '${item[1]}')" >Submit</button>
+                        <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+                      </form>
+                    </div>
       </div>
     </div>
   </div>
@@ -114,6 +175,8 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 
+
+
 async function addI(name,s_n,cat){
     name = document.querySelector('#name').value;
     s_n = document.querySelector('#SN').value;
@@ -135,7 +198,5 @@ async function addI(name,s_n,cat){
     closeForm();
 }
 
-
-
-nextpage();
-table(currentPage);
+    nextpage();
+    table(1);
