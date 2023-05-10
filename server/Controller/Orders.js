@@ -11,6 +11,66 @@ router.get('/getAllOrdersItem', getAllOrdersItem);
 router.get('/getAllOrderItemForUser', getAllOrderItemForUser);
 router.get('/getOrderAcceptForUser', getOrderAcceptForUser);
 router.get('/getOrderForStatus', getOrderForStatus);
+router.post('/addorder', addOrder);
+
+
+async function addOrder(req, response) {
+    const db = await connection();
+    let orderObj = req.body;
+    let sql = `SELECT * from orders WHERE (BORROW_DATE < to_date(:1,'DD/MM/YYYY') AND RETURN_DATE > to_date(:1,'DD/MM/YYYY'))`;
+    let allOrdersBetween = await db.execute(sql,[orderObj.BORROW_DATE] );
+    console.log(allOrdersBetween);
+    sql =`SELECT * from orders WHERE (BORROW_DATE > to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE < to_date(:2,'DD/MM/YYYY'))`;
+    let allOrdersBefore = await db.execute(sql,[orderObj.BORROW_DATE,orderObj.RETURN_DATE] );
+    console.log(allOrdersBefore);
+    
+    sql = `INSERT INTO orders (USERNAME, NAMEITEM, S_N, BORROW_DATE, RETURN_DATE) 
+            VALUES(:1, :2, :3, to_date(:4 , 'DD/MM/YYYY'), to_date(:5 , 'DD/MM/YYYY'))`;
+
+    let values = [
+        orderObj.USERNAME,
+        orderObj.NAMEITEM,
+        orderObj.S_N,
+        orderObj.BORROW_DATE,
+        orderObj.RETURN_DATE
+    ];
+    if(allOrdersBetween.rows.length > 0)
+    {
+        for(let i=0;i<allOrdersBetween.rows.length;i++)
+        {
+            if(allOrdersBetween.rows[i][1] == orderObj.NAMEITEM && allOrdersBetween.rows[i][2] == orderObj.S_N)
+            {
+                if(allOrdersBetween.rows[i][5] != 'Reject')
+                    return response.status(400).json({ message: "The selected dates are not available for this item" });
+            }
+        }
+    }
+    if(allOrdersBefore.rows.length > 0)
+    {
+        for(let i=0;i<allOrdersBefore.rows.length;i++)
+        {
+            if(allOrdersBefore.rows[i][1] == orderObj.NAMEITEM && allOrdersBefore.rows[i][2] == orderObj.S_N)
+            {
+                if(allOrdersBefore.rows[i][5] != 'Reject')
+                    return response.status(400).json({ message: "The selected dates are not available for this item" });
+            }
+        }
+    }
+    db.execute(sql, values,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "Existing order" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                return response.json({ message: "New order created successfully" });
+            } else {
+                return response.status(400).json({ message: "Something went wrong" });
+            }
+        }
+    });
+
+}
 
 async function addOrderForPS(req, response) {
     const db = await connection();
