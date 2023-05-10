@@ -20,7 +20,6 @@ async function addOrder(req, response) {
     let sql = `SELECT * from orders WHERE (BORROW_DATE < to_date(:1,'DD/MM/YYYY') AND RETURN_DATE > to_date(:1,'DD/MM/YYYY'))`;
     let allOrdersBetween = await db.execute(sql,[orderObj.BORROW_DATE] );
     console.log(allOrdersBetween);
-    console.log(orderObj.RETURN_DATE);
     sql =`SELECT * from orders WHERE (BORROW_DATE > to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE < to_date(:2,'DD/MM/YYYY'))`;
     let allOrdersBefore = await db.execute(sql,[orderObj.BORROW_DATE,orderObj.RETURN_DATE] );
     console.log(allOrdersBefore);
