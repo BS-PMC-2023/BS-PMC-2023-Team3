@@ -6,8 +6,8 @@ const app = require('../../server');
 describe("POST /users/login", () => {
     it("It should respond 'login ok!'", async () => {
         const User = await request(app).post("/users/login").send({
-            USERNAME: 'yamb1254',
-            PASSWORD: '123456'
+            EMAIL: 'yovelef@ac.sce.ac.il',
+            PASSWORD: '12345678'
         });
         expect(User.body.message).toBe("login ok!");
         expect(User.statusCode).toBe(200);
@@ -18,7 +18,7 @@ describe("POST /users/login", () => {
 describe("POST /users/login", () => {
     it("It should respond 'Wrong username or password'", async () => {
         const newUser = await request(app).post("/users/login").send({
-            user_name: 'efrat',
+            EMAIL: 'yovelef@ac.sce.ac.il',
             password: '123',
 
         });
