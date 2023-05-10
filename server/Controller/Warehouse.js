@@ -123,7 +123,13 @@ async function getSize(req, response){
             return response.status(400).json({ message: "category is not found" });
         }
         if (!err) {
-             response.json(res.rows)
+            let array = [];
+           for(let i=0;i<res.rows.length;i++)
+            {
+                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+                array.push(obj);
+            }
+            return response.status(200).json(array);
         } else {
                 console.log(err);
                 response.status(400).json({ message: "Sometihng went wrong" });
@@ -139,7 +145,13 @@ async function getSize(req, response){
             return response.status(400).json({ message: "items " +status+" is not found" });
         }
         if (!err) {
-             response.json(res.rows)
+            let array = [];
+           for(let i=0;i<res.rows.length;i++)
+            {
+                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+                array.push(obj);
+            }
+            return response.status(200).json(array);
         } else {
                 console.log(err);
                 response.status(400).json({ message: "Somting went wrong" });
