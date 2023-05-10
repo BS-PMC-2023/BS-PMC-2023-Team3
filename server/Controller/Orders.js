@@ -14,7 +14,7 @@ router.get('/getOrderAcceptForUser', getOrderAcceptForUser);
 async function addOrderForPS(req, response) {
     const db = await connection();
     let orderObj = req.body;
-    let sql = `INSERT INTO Studio_Podcast (USERNAME, TYPE, NUM, DATE_TIME) 
+    let sql = `INSERT INTO Studio_Podcast_Order (USERNAME, TYPE, NUM, DATE_TIME) 
             VALUES(:1, :2, :3, TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI'))`;
 
     let values = [
@@ -47,12 +47,12 @@ async function UpdateStatusOrderPS(req, response) {
     console.log(status, date_time, type, number);
     if(status == 'Reject')
     {
-        sql = "DELETE FROM Studio_Podcast WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
+        sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
         val = [type, number, date_time];
     }
     if(status == 'Accept') 
     {
-        sql = "UPDATE Studio_Podcast SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
+        sql = "UPDATE Studio_Podcast_Order SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
         val = [status,type, number, date_time];
     }
     db.execute(sql, val, (err, res) => {
@@ -66,7 +66,7 @@ async function UpdateStatusOrderPS(req, response) {
 
 async function getAllOrdersPS(req, response) {
     const db = await connection();
-    db.execute("SELECT * FROM Studio_Podcast" ,(err, res)=> {
+    db.execute("SELECT * FROM Studio_Podcast_Order" ,(err, res)=> {
     if (res.rows.length == 0) {
         return response.status(400).json({ message: "Orders is not found" });
     }
@@ -92,7 +92,7 @@ async function getAllOrdersPS(req, response) {
 async function getAllOrderPSForUser(req, response) {
     const db = await connection();
     let user= [req.query.USERNAME];
-    db.execute("SELECT * FROM Studio_Podcast WHERE USERNAME= :1", user ,(err, res)=> {
+    db.execute("SELECT * FROM Studio_Podcast_Order WHERE USERNAME= :1", user ,(err, res)=> {
     if (res.rows.length == 0) {
         return response.status(400).json({ message: "Orders for " +user+" is not found" });
     }
