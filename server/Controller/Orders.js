@@ -17,10 +17,10 @@ router.post('/addorder', addOrder);
 async function addOrder(req, response) {
     const db = await connection();
     let orderObj = req.body;
-    let sql = `SELECT * from orders WHERE (BORROW_DATE < to_date(:1,'DD/MM/YYYY') AND RETURN_DATE > to_date(:1,'DD/MM/YYYY'))`;
+    let sql = `SELECT * from orders WHERE (BORROW_DATE <= to_date(:1,'DD/MM/YYYY') AND RETURN_DATE >= to_date(:1,'DD/MM/YYYY'))`;
     let allOrdersBetween = await db.execute(sql,[orderObj.BORROW_DATE] );
     console.log(allOrdersBetween);
-    sql =`SELECT * from orders WHERE (BORROW_DATE > to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE < to_date(:2,'DD/MM/YYYY'))`;
+    sql =`SELECT * from orders WHERE (BORROW_DATE >= to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE <= to_date(:2,'DD/MM/YYYY'))`;
     let allOrdersBefore = await db.execute(sql,[orderObj.BORROW_DATE,orderObj.RETURN_DATE] );
     console.log(allOrdersBefore);
     
@@ -138,7 +138,8 @@ async function getAllOrdersPS(req, response) {
                     USERNAME: orders[0], 
                     TYPE: orders[1],
                     NUM: orders[2],
-                    DATE_TIME: orders[3].toLocaleString('he-IL').split('').join('')
+                    DATE_TIME: orders[3].toLocaleString('he-IL').split('').join(''),
+                    STATUS : orders[4]
                 }
                 array.push(obj)
             })
@@ -164,7 +165,8 @@ async function getAllOrderPSForUser(req, response) {
                 USERNAME: orders[0], 
                 TYPE: orders[1],
                 NUM: orders[2],
-                DATE_TIME: orders[3].toLocaleString('he-IL').split('').join('')
+                DATE_TIME: orders[3].toLocaleString('he-IL').split('').join(''),
+                STATUS: orders[4]
             }
             array.push(obj)
         })

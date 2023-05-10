@@ -16,13 +16,13 @@ describe("POST /users/login", () => {
 });
 
 describe("POST /users/login", () => {
-    it("It should respond 'Wrong username or password'", async () => {
+    it("It should respond 'Wrong email or password'", async () => {
         const newUser = await request(app).post("/users/login").send({
             EMAIL: 'yovelef@ac.sce.ac.il',
             password: '123',
 
         });
-        expect(newUser.body.message).toBe("Wrong username or password");
+        expect(newUser.body.message).toBe("Wrong email or password");
         expect(newUser.statusCode).toBe(400);
 
     });
