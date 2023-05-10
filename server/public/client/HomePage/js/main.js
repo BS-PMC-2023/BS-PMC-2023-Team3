@@ -92,7 +92,7 @@ async function ChoosePage() {
 	const title = sessionStorage.title
 
 	
-	if(title == "null"){
+	if(title == "StorgeManger"){
 		window.location.href = "http://localhost:3001/Storgemanger";
 	}
 	else{
