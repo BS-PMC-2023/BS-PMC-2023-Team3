@@ -86,10 +86,16 @@ $(function() {
 
 });
 
-async function ChoosePage() {
-
+async function ChoosePage(username1 =null , title1 =null) {
+	if(username1 == null && title1 ==null){
 	const username = sessionStorage.username
 	const title = sessionStorage.title
+	}
+	else{
+		const username = username1
+		const title = title1
+	}
+	
 
 	
 	if(title == "StorgeManger"){
