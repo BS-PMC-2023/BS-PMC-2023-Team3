@@ -7,8 +7,9 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'pwd'
-                sh 'npm install'
+                    dir('server') {
+                    sh 'npm install'
+                }
             }
         }
         
