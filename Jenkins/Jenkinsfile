@@ -11,9 +11,9 @@ pipeline {
             }
         }
         steps {
-                dir('sever') {
+                dir('server') {
                 sh 'npm install'
-            }
+                }
         }
     }
     stage('Run Jest Tests') {
