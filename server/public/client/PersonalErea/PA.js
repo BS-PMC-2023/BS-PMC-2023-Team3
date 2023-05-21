@@ -32,9 +32,9 @@ async function OrderTable() {
 
   const username = sessionStorage.username
   var d = document.getElementById("items");
-  if(d[2] != null){
+  /*if(d[2] != null){
     d[2].innerHTML="";
-  }
+  }*/
   //call for get to the url:
   let response = await fetch('http://localhost:3001/orders/getAllOrderItemForUser?USERNAME='+username, {
       //Get
@@ -73,7 +73,7 @@ const itemHtml = `
             data-height="100"
             data-displayprevious="true"
             data-thickness=".2"
-            value = "16"
+            value = ${item.DAYS}
             data-fgcolor="#e06b7d"
             data-bgcolor="#e8e8e8"
             style="
@@ -112,7 +112,7 @@ const itemHtml = `
 OrderTable();
 
 
-async function faultItem() {
+/*async function faultItem() {
   
   var d = document.getElementById("items");
   if(d[2] != null){
@@ -193,3 +193,4 @@ const itemHtml = `
 }
 
 faultItem();
+*/
