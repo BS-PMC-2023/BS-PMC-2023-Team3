@@ -8,6 +8,7 @@ const connection = require('./mySQL');
 const users = require("./Controller/Users.js").router;
 const warehouse = require("./Controller/Warehouse.js").router;
 const orders = require("./Controller/Orders.js").router;
+const notification = require("./Controller/Notification.js").router;
 const path = require('path')
 
 app.use(cors());
@@ -79,6 +80,7 @@ app.get('/table', function (req, res) {
 app.use('/users', users);
 app.use('/warehouse', warehouse);
 app.use('/orders',orders);
+app.use('/notification',notification);
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
 module.exports = app;
