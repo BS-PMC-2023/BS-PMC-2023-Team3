@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8" />
 
-    <title>user profile bio graph and total sales - Bootdey.com</title>
+    <title id="fullnameTitle ">Statistics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="PA.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <link
@@ -27,29 +28,28 @@
                   alt
                 />
               </a>
-              <h1 id="fullname">ישראל לסרי</h1>
+              <h1 id="fullname"></h1>
             </div>
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="WareHouseM.html">
+                <a class="active" href="Statistics.html">
                   <i class="fa fa-user"></i> Profile</a
                 >
               </li>
               <li>
-                <a href="#">
-                  <i class="fa fa-calendar"></i> יומן
-                  <span class="label label-warning pull-right r-activity"
-                    >9</span
-                  ></a
-                >
-              </li>
-              <li class="active">
-                <a href="faultMange.html">
-                  <i class="fa fa-edit"></i> ניהול תקלות</a
+                <a onclick="showImage()" href="#">
+                  <i class="fa fa-edit"></i> ציוד פגום במחסן</a
                 >
               </li>
               <li>
-                <a href="#"> <i class="fa fa-edit"></i> ניהול הזמנות</a>
+                <a onclick="generateChart()" href="#">
+                  <i class="fa fa-edit"></i> הזמנות נפוצות במחסן</a
+                >
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-edit"></i> הזמנות נפוצות של אולפנים</a
+                >
               </li>
             </ul>
           </div>
@@ -86,9 +86,16 @@
             </div>
           </div>
         </div>
+        <div id="imageContainer">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Standard_deviation_diagram.svg/1920px-Standard_deviation_diagram.svg.png"
+            alt="Image"
+          />
+        </div>
+        <canvas id="myChart"></canvas>
       </div>
     </div>
-    <script src="PA.js"></script>
+    <script src="PA-SM.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript"></script>

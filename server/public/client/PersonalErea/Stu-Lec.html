@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
 
-    <title>user profile bio graph and total sales - Bootdey.com</title>
+    <title id="fullnameTitle"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
     <div class="container bootstrap snippets bootdey">
-      <div id ="items" class="row">
+      <div id="items" class="row">
         <div class="profile-nav col-md-3">
           <div class="panel">
             <div class="user-heading round">
@@ -27,11 +27,11 @@
                   alt
                 />
               </a>
-              <h1 id="fullname">ישראל לסרי</h1>
+              <h1 id="fullname"></h1>
             </div>
             <ul class="nav nav-pills nav-stacked">
               <li class="active">
-                <a href="#"> <i class="fa fa-user"></i> Profile</a>
+                <a href="Stu-Lec.html"> <i class="fa fa-user"></i> Profile</a>
               </li>
               <li>
                 <a href="#">
@@ -42,10 +42,9 @@
                 >
               </li>
               <li>
-                <a href="#"> <i class="fa fa-edit"></i> ערוך פרופיל</a>
-              </li>
-              <li>
-                <a href="#"> <i class="fa fa-edit"></i> ניהול הזמנות</a>
+                <a onclick="OrderItem()" href="#">
+                  <i class="fa fa-edit"></i>השאלות שלי</a
+                >
               </li>
             </ul>
           </div>
