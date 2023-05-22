@@ -50,8 +50,14 @@ app.get('/Storgemanger', function (req, res) {
 
 //? Personal Area Page
 app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
-app.get('/profile', function (req, res) {
+app.get('/Stu_Lec_profile', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/PersonalErea/Stu-Lec.html'));
+});
+
+//? Statistics Page
+app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
+app.get('/Statistics', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/PersonalErea/Statistics.html'));
 });
 
 //? Login Page
