@@ -34,6 +34,7 @@ async function addOrder(req, response) {
         orderObj.BORROW_DATE,
         orderObj.RETURN_DATE
     ];
+    let temp = values;
     if(allOrdersBetween.rows.length > 0)
     {
         for(let i=0;i<allOrdersBetween.rows.length;i++)
@@ -62,13 +63,23 @@ async function addOrder(req, response) {
             return response.status(400).json({ message: "Existing order" });
         } else {
             console.log(res)
-            if (res.rowsAffected > 0) {
-                return response.json({ message: "New order created successfully" });
-            } else {
+            if (res.rowsAffected == 0) 
                 return response.status(400).json({ message: "Something went wrong" });
-            }
         }
     });
+    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+    let description = temp[0]  +" order '" +temp[1] +"' with serial number '"+ temp[2] +"' on dates "+ temp[3] +" - "+temp[4];
+    console.log(description);
+    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "failed add notification" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                return response.json({ message: "New order created successfully" });
+            }
+}});
 
 }
 
@@ -84,22 +95,33 @@ async function addOrderForPS(req, response) {
         orderObj.NUM,
         orderObj.DATE_TIME
     ];
-
+    let temp = values;
     db.execute(sql, values,  (err, res) => {
         if (err) {
             console.log(err);
             return response.status(400).json({ message: "The podcast or studio is busy at the time you chose" });
         } else {
             console.log(res)
-            if (res.rowsAffected > 0) {
-                return response.json({ message: "New order created successfully" });
-            } else {
+            if (res.rowsAffected == 0) {
                 return response.status(400).json({ message: "Something went wrong" });
             }
         }
     });
-
+    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+    let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
+    console.log(description);
+    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "failed add notification" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                return response.json({ message: "New order created successfully" });
+            }
+}});
 }
+
 
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
