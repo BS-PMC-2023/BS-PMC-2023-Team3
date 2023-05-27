@@ -28,7 +28,7 @@
           
   position: fixed;
   top: 20px;
-  right: 20px;
+  right: 1px;
 
 }
 
@@ -122,4 +122,8 @@ body{
 
 .notification_wrap .dropdown.active{
 	display: block;
+}
+
+.drop{
+	position: relative;
 }
