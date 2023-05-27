@@ -7,6 +7,7 @@ router.get('/getAllNotiForUser', getAllNotiForUser);
 router.get('/getAllNotiForManager', getAllNotiForManager);
 router.get('/getNotReadNotiForUser', getNotReadNotiForUser);
 router.get('/getAllNoti', getAllNoti);
+router.get('/getNotReadNotiForManager', getNotReadNotiForManager);
 
 async function getAllNotiForUser(req, response) {
     const db = await connection();
@@ -167,6 +168,29 @@ function dateDiffInDays(a, b) {
     } else {
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" });
+        }
+});
+}
+
+async function getNotReadNotiForManager(req, response) {
+    const db = await connection();
+    db.execute("SELECT * FROM notifications WHERE association= 'StorgeManger' AND read= 'NO'", user ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders for StorgeManger is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((notification) => {
+            let obj = {
+                DESCRIPTION: notification[0], 
+                READ: notification[2]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" })
         }
 });
 }
