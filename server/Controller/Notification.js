@@ -3,6 +3,31 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/CheckDate', CheckDate);
+router.get('/getAllNotiForUser', getAllNotiForUser);
+
+async function getAllNotiForUser(req, response) {
+    const db = await connection();
+    let user= [req.query.USERNAME];
+    db.execute("SELECT * FROM notifications WHERE association= :1", user ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders for " +user+" is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((notification) => {
+            let obj = {
+                DESCRIPTION: notification[0], 
+                READ: notification[2]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
 
 async function CheckDate(req, response) {
     const db = await connection();
@@ -73,7 +98,7 @@ function dateDiffInDays(a, b) {
   
 
   
-module.exports = { router};
+module.exports = { router};
 
 
 
