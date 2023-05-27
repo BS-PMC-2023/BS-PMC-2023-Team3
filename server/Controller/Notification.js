@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/CheckDate', CheckDate);
 router.get('/getAllNotiForUser', getAllNotiForUser);
 router.get('/getAllNotiForManager', getAllNotiForManager);
+router.get('/getNotReadNotiForUser', getNotReadNotiForUser);
 
 async function getAllNotiForUser(req, response) {
     const db = await connection();
@@ -35,6 +36,30 @@ async function getAllNotiForManager(req, response) {
     db.execute("SELECT * FROM notifications WHERE association= 'StorgeManger'" ,(err, res)=> {
     if (res.rows.length == 0) {
         return response.status(400).json({ message: "Orders for StorgeManger is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((notification) => {
+            let obj = {
+                DESCRIPTION: notification[0], 
+                READ: notification[2]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
+
+async function getNotReadNotiForUser(req, response) {
+    const db = await connection();
+    let user= [req.query.USERNAME];
+    db.execute("SELECT * FROM notifications WHERE association= :1 AND read= 'NO'", user ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders for " +user+" is not found" });
     }
     if (!err) {
         let array =[];

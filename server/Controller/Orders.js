@@ -122,7 +122,6 @@ async function addOrderForPS(req, response) {
 }});
 }
 
-
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
     let sql, val;
@@ -217,7 +216,9 @@ async function UpdateStatusOrderItem(req, response) {
     const db = await connection();
     let sql, val;
     let status = req.body.STATUS_ORDER, user = req.body.USERNAME, bor_date = req.body.BORROW_DATE,item_name = req.body.NAMEITEM,item_sn= req.body.S_N;
-    
+    let sqlForRetDate = "SELECT RETURN_DATE from orders WHERE USERNAME= :1 AND NAMEITEM= :2 AND S_N= :3 AND BORROW_DATE= to_date(:4,'DD/MM/YYYY')";
+    let ret_date = await db.execute(sqlForRetDate,[user, item_name, item_sn, bor_date] );
+
     if(status == 'Reject')
     {
         sql = "UPDATE orders SET STATUS_ORDER= :1 WHERE USERNAME= :2 AND NAMEITEM= :3 AND S_N= :4 AND BORROW_DATE= to_date(:5,'DD/MM/YYYY')";
@@ -231,10 +232,20 @@ async function UpdateStatusOrderItem(req, response) {
     db.execute(sql, val, (err, res) => {
         if (err) {
             response.status(400).json({ message: "Something went wrong" });
-        } else {
-            response.status(200).json({ message: "update successfully!" });
         }
     });
+    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+    let description = "The warehouse manager '"+status+"' your order for '" + item_name + "' on dates " + bor_date + " - " +ret_date.rows[0][0].toLocaleDateString('he-IL').split('/').join('/') ;
+    db.execute(sql,[description,user] ,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "failed add notification" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                response.status(200).json({ message: "update successfully!" });
+            }
+}});
 }
 
 async function getAllOrdersItem(req, response) {
