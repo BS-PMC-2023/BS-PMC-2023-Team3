@@ -25,6 +25,7 @@
 
     <!-- Style -->
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../notifction.css"/>
 
     <title>HomePage</title>
   </head>
@@ -87,6 +88,52 @@
     
 
     <div class="hero" style="background-image: url('images/hero_1.jpg')" >
+      <div class="dropdown" >
+        <div class="notification_wrap">
+          <div class="notification_icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div class="dropdown">
+            <div class="notify_item">
+              <div class="notify_img">
+                <img src="images/not_1.png" alt="profile_pic" style="width: 50px">
+              </div>
+              <div class="notify_info">
+                <p>Alex commented on<span>Timeline Share</span></p>
+                <span class="notify_time">10 minutes ago</span>
+              </div>
+            </div>
+            <div class="notify_item">
+              <div class="notify_img">
+                <img src="images/not_2.png" alt="profile_pic" style="width: 50px">
+              </div>
+              <div class="notify_info">
+                <p>Ben hur commented on your<span>Timeline Share</span></p>
+                <span class="notify_time">55 minutes ago</span>
+              </div>
+            </div>
+            <div class="notify_item">
+              <div class="notify_img">
+                <img src="images/not_3.png" alt="profile_pic" style="width: 50px">
+              </div>
+              <div class="notify_info">
+                <p>Meryn trant liked your<span>Cover Picture</span></p>
+                <span class="notify_time">2 hours ago</span>
+              </div>
+            </div>
+            <div class="notify_item">
+              <div class="notify_img">
+                <img src="images/not_4.png" alt="profile_pic" style="width: 50px">
+              </div>
+              <div class="notify_info">
+                <p>John wick commented on your<span>Profile Picture</span></p>
+                <span class="notify_time">6 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
 <div class="container">
@@ -109,7 +156,7 @@
                     </ul>
                 </div>
                 <div>
-                    <a href="#" data-bs-target=".add-new" class="btn btn-primary" onclick="openForm()"><i class="bx bx-plus me-1"></i> הוסף פריט</a>
+                    <a href="#" data-bs-target=".add-new" class="btn btn-primary" onclick="openForm()"><i class="bx bx-plus me-1" id="additem"></i> הוסף פריט</a>
                     <div class="form-popup" id="myForm">
                       <form class="form-container">
                         <h2>הוספת פריט</h2>
@@ -150,6 +197,16 @@
 
 
       </div>
+
+      <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script>
+        $(document).ready(function(){
+          $(".notification_icon .fa-bell").click(function(){
+            $(".dropdown").toggleClass("active");
+          })
+        });
+      </script>
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>

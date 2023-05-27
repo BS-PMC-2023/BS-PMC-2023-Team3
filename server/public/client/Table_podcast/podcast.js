@@ -42,6 +42,8 @@ async function orderpodcast(type , num ){
     let body = await response.json()
 
    alert(body.message);
+   location.reload();
+
 }
 
 function pagenum(num){
@@ -69,6 +71,9 @@ console.log(itemsPerPage);
 d.innerHTML = '';
 
 paginatedItems.forEach((item) => {
+    if(sessionStorage.title != "StorageManger" ){
+        document.getElementById("additem").hidden = true;
+    }
   const itemHtml = `
     <div class="col-xl-3 col-sm-6">
       <div class="card">
@@ -126,6 +131,7 @@ async function nextpage(){
         const pageitemjtml = `<li class="page-item" onclick = "pagenum(${i+1})"><a href="#" class="page-link">${i+1}</a></li>`
         document.getElementById("pagenum").innerHTML += pageitemjtml
     }
+    
 }
 
 nextpage();
