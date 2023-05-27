@@ -8,6 +8,7 @@ router.get('/getAllNotiForManager', getAllNotiForManager);
 router.get('/getNotReadNotiForUser', getNotReadNotiForUser);
 router.get('/getAllNoti', getAllNoti);
 router.get('/getNotReadNotiForManager', getNotReadNotiForManager);
+router.get('/getNumberNotReadNotiForUser', getNumberNotReadNotiForUser);
 
 async function getAllNotiForUser(req, response) {
     const db = await connection();
@@ -192,6 +193,22 @@ async function getNotReadNotiForManager(req, response) {
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" })
         }
+});
+}
+
+async function getNumberNotReadNotiForUser(req, response) {
+    const db = await connection();
+    let user= [req.query.USERNAME];
+    db.execute("SELECT COUNT(*) FROM notifications WHERE association= :1 AND read= 'NO'", user ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders for " +user+" is not found" });
+    }
+    if (!err) {
+        return response.status(200).json(res.rows[0][0]);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+}
 });
 }
 
