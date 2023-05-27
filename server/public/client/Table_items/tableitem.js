@@ -100,6 +100,7 @@ d.innerHTML = '';
 
 paginatedItems.forEach((item) => {
   const id = Date.now();
+  console.log(sessionStorage.title)
   if(sessionStorage.title == "StorageManger" ){
     const itemHtml = `
     <div class="col-xl-3 col-sm-6" id="${id}">
@@ -145,8 +146,12 @@ paginatedItems.forEach((item) => {
         </div>
     </div>
     </div>`
+    d.innerHTML += itemHtml;
+
+
   }
-  else{
+  else
+  {
     document.getElementById("additem").hidden = true;
     const itemHtml = `
     <div class="col-xl-3 col-sm-6" id="${id}">
@@ -185,9 +190,8 @@ paginatedItems.forEach((item) => {
         </div>
     </div>
     </div>`
-
-  }
     d.innerHTML += itemHtml;
+  }
 });
 }
 

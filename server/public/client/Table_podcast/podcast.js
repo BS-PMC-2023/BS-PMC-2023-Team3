@@ -100,7 +100,7 @@ paginatedItems.forEach((item) => {
                         <input type="time" id="time_ps" required>
 
                         <button type="button" class="btn btn-primary" onclick = "orderpodcast('${item.TYPE}','${item.NUM}')" >Submit</button>
-                        <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+                        <button type="button" class="btn btn-danger" onclick="closeFormorder()">Close</button>
                       </form>
                     </div>
       </div>
@@ -133,6 +133,7 @@ async function nextpage(){
     }
     
 }
+
 
 nextpage();
 table(currentPage);
