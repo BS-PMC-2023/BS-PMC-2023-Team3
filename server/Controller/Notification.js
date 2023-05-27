@@ -9,6 +9,7 @@ router.get('/getNotReadNotiForUser', getNotReadNotiForUser);
 router.get('/getAllNoti', getAllNoti);
 router.get('/getNotReadNotiForManager', getNotReadNotiForManager);
 router.get('/getNumberNotReadNotiForUser', getNumberNotReadNotiForUser);
+router.post('/UpdateToRead', UpdateToRead);
 
 async function getAllNotiForUser(req, response) {
     const db = await connection();
@@ -212,6 +213,20 @@ async function getNumberNotReadNotiForUser(req, response) {
 });
 }
 
+async function UpdateToRead(req, response) {
+    const db = await connection();
+    db.execute("UPDATE notifications SET READ= 'YES' WHERE ASSOCIATION= :1 AND DESCRIPTION= :2", [req.body.ASSOCIATION,req.body.DESCRIPTION] ,(err, res)=> {
+    if (res.rowsAffected == 0) {
+        return response.status(400).json({ message: "This notification is unavailable" });
+    }
+    if (!err) {
+        response.status(200).json({ message: "update successfully!" });
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
 module.exports = { router};
 
 
