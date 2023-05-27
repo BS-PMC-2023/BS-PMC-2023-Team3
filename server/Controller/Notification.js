@@ -6,6 +6,7 @@ router.get('/CheckDate', CheckDate);
 router.get('/getAllNotiForUser', getAllNotiForUser);
 router.get('/getAllNotiForManager', getAllNotiForManager);
 router.get('/getNotReadNotiForUser', getNotReadNotiForUser);
+router.get('/getAllNoti', getAllNoti);
 
 async function getAllNotiForUser(req, response) {
     const db = await connection();
@@ -146,7 +147,30 @@ function dateDiffInDays(a, b) {
   }
   
 
-  
+  async function getAllNoti(req, response) {
+    const db = await connection();
+    db.execute("SELECT * FROM notifications" ,(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "notification is not found" });
+    }
+    if (!err) {
+            let array =[];
+            res.rows.map((notification) => {
+                let obj = {
+                    DESCRIPTION: notification[0], 
+                    ASSOCIATION: notification[1],
+                    READ: notification[2]
+                }
+                array.push(obj)
+            })
+            return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+        }
+});
+}
+
 module.exports = { router};
 
 
