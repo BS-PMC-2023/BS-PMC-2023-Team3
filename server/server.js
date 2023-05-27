@@ -8,6 +8,7 @@ const connection = require('./mySQL');
 const users = require("./Controller/Users.js").router;
 const warehouse = require("./Controller/Warehouse.js").router;
 const orders = require("./Controller/Orders.js").router;
+const notification = require("./Controller/Notification.js").router;
 const path = require('path')
 
 app.use(cors());
@@ -49,8 +50,14 @@ app.get('/Storgemanger', function (req, res) {
 
 //? Personal Area Page
 app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
-app.get('/profile', function (req, res) {
+app.get('/Stu_Lec_profile', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/PersonalErea/Stu-Lec.html'));
+});
+
+//? Statistics Page
+app.use(express.static(path.join(__dirname, '/public/client/PersonalErea')))
+app.get('/Statistics', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/PersonalErea/Statistics.html'));
 });
 
 //? Login Page
@@ -79,6 +86,7 @@ app.get('/table', function (req, res) {
 app.use('/users', users);
 app.use('/warehouse', warehouse);
 app.use('/orders',orders);
+app.use('/notification',notification);
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
 module.exports = app;

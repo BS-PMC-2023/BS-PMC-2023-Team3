@@ -13,6 +13,20 @@ h1{
     text-align: right;
 }
 
+.col-md-6 {
+    width: 32%;
+}
+
+#imageContainer {
+    display: none;
+}
+
+#imageContainer img {
+    display: block;
+    max-width: 50%;
+    height: auto;
+}
+
 .profile-nav, .profile-info{
     margin-top:30px;   
 }
