@@ -86,23 +86,15 @@ $(function() {
 
 });
 
-async function ChoosePage(username1 =null , title1 =null) {
-	if(username1 == null && title1 ==null){
-	const username = sessionStorage.username
-	const title = sessionStorage.title
-	}
-	else{
-		const username = username1
-		const title = title1
-	}
-	
+async function ChoosePage() {
 
-	
+	const title = sessionStorage.title
+
 	if(title == "StorgeManger"){
 		window.location.href = "http://localhost:3001/Storgemanger";
 	}
 	else{
-		window.location.href = "http://localhost:3001/profile";
+		window.location.href = "http://localhost:3001/Stu_Lec_profile";
 	}
 	
   
