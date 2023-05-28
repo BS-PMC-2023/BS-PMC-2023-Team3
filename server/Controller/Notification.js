@@ -88,7 +88,6 @@ async function CheckDate(req, response) {
     const date = new Date();
     let sql = `SELECT * FROM orders WHERE BORROW_DATE <= :1`;
     let orders = await db.execute(sql,[date] );
-    console.log(orders.rows);
     for(let i = 0; i<orders.rows.length; i++)
     {
         let number = getOrderForStatus(date.toLocaleDateString('he-IL').split('').join(''), orders.rows[i][4].toLocaleDateString('he-IL').split('').join(''));
@@ -125,9 +124,18 @@ async function CheckDate(req, response) {
                 return response.status(400).json({ message: "failed add notification" });
             }
             });
+            sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+            description = orders.rows[i][0]+" is "+number*-1+" days late in returning an item '" + orders.rows[i][1] + "' with the serial number : '" + orders.rows[i][2]+"'"; 
+            db.execute(sql,[description,"StorgeManger"] ,  (err, res) => {
+            if (err) 
+            {
+                console.log(err);
+                return response.status(400).json({ message: "failed add notification" });
+            }
+            });
         }
     }
-    return response.status(200).json({ message: "yes!" });
+    return response.status(200).json({ message: "ok" });
 }
 
 function getOrderForStatus(borrow, ret) {
@@ -136,7 +144,6 @@ function getOrderForStatus(borrow, ret) {
     const a = new Date(borrow),
     b = new Date(ret),
     difference = dateDiffInDays(a, b);
-    console.log(difference);
   return difference;
 }
 
