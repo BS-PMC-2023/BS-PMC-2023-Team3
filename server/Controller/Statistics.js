@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
 router.get('/getNumberAllOrdersPS', getNumberAllOrdersPS);
 router.get('/getNumberOfAllFaulty', getNumberOfAllFaulty);
+router.get('/getNumberOfFaultyCategory', getNumberOfFaultyCategory);
 
 async function getNumberOfOrdersCategory(req, response) {
     const db = await connection();
@@ -63,6 +64,26 @@ async function getNumberOfAllFaulty(req, response) {
     db.execute("SELECT COUNT(*) FROM ITEMS WHERE STATUS= 'FAULTY'" ,(err, res)=> {
     if (!err) {
         return response.status(200).json(res.rows[0][0]);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+}
+});
+}
+
+async function getNumberOfFaultyCategory(req, response) {
+    const db = await connection();
+    db.execute("SELECT CATEGORY,COUNT(*) FROM ITEMS WHERE STATUS= 'FAULTY' GROUP BY CATEGORY " ,(err, res)=> {
+    if (!err) {
+        let array =[];
+        res.rows.map((items) => {
+            let obj = {
+                CATEGORY: items[0], 
+                NUMBER: items[1]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
     } else {
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" });
