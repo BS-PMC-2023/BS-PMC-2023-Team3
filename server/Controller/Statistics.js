@@ -4,12 +4,9 @@ const router = express.Router();
 
 router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
 router.get('/getNumberAllOrdersPS', getNumberAllOrdersPS);
-<<<<<<< HEAD
 router.get('/getNumberOfAllFaulty', getNumberOfAllFaulty);
 router.get('/getNumberOfFaultyCategory', getNumberOfFaultyCategory);
 router.get('/getNumberAllOrders', getNumberAllOrders);
-=======
->>>>>>> 621bae6 (BSPMC233-172)
 
 async function getNumberOfOrdersCategory(req, response) {
     const db = await connection();
@@ -63,7 +60,6 @@ async function getNumberAllOrdersPS(req, response) {
     });
 }
 
-<<<<<<< HEAD
 async function getNumberOfAllFaulty(req, response) {
     const db = await connection();
     db.execute("SELECT COUNT(*) FROM ITEMS WHERE STATUS= 'FAULTY'" ,(err, res)=> {
@@ -108,6 +104,4 @@ async function getNumberAllOrders(req, response) {
 });
 }
 
-=======
->>>>>>> 621bae6 (BSPMC233-172)
 module.exports = { router};
