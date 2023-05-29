@@ -6,6 +6,7 @@ router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
 router.get('/getNumberAllOrdersPS', getNumberAllOrdersPS);
 router.get('/getNumberOfAllFaulty', getNumberOfAllFaulty);
 router.get('/getNumberOfFaultyCategory', getNumberOfFaultyCategory);
+router.get('/getNumberAllOrders', getNumberAllOrders);
 
 async function getNumberOfOrdersCategory(req, response) {
     const db = await connection();
@@ -84,6 +85,18 @@ async function getNumberOfFaultyCategory(req, response) {
             array.push(obj)
         })
         return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+}
+});
+}
+
+async function getNumberAllOrders(req, response) {
+    const db = await connection();
+    db.execute("SELECT COUNT(*) FROM orders WHERE STATUS_ORDER='Accept'" ,(err, res)=> {
+    if (!err) {
+        return response.status(200).json(res.rows[0][0]);
     } else {
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" });
