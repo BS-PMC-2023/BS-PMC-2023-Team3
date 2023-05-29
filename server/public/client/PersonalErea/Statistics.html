@@ -37,18 +37,18 @@
                 >
               </li>
               <li>
-                <a onclick="showImage()" href="#">
+                <a onclick="faultyItems()" href="#">
                   <i class="fa fa-edit"></i> ציוד פגום במחסן</a
                 >
               </li>
               <li>
-                <a onclick="generateChart()" href="#">
-                  <i class="fa fa-edit"></i> הזמנות נפוצות במחסן</a
+                <a onclick="itemOrders()" href="#">
+                  <i class="fa fa-edit"></i> הזמנות פריטים במחסן</a
                 >
               </li>
               <li>
-                <a href="#">
-                  <i class="fa fa-edit"></i> הזמנות נפוצות של אולפנים</a
+                <a onclick="podcastOrders()" href="#">
+                  <i class="fa fa-edit"></i> הזמנות אולפנים</a
                 >
               </li>
             </ul>
@@ -86,13 +86,9 @@
             </div>
           </div>
         </div>
-        <div id="imageContainer">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Standard_deviation_diagram.svg/1920px-Standard_deviation_diagram.svg.png"
-            alt="Image"
-          />
-        </div>
-        <canvas id="myChart"></canvas>
+        <canvas id="OrdersChart"></canvas>
+        <canvas id="faultyChart"></canvas>
+        <canvas id="podcastChart"></canvas>
       </div>
     </div>
     <script src="PA-SM.js"></script>
