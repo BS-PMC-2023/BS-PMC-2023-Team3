@@ -1,0 +1,39 @@
+const connection = require('../mySQL');
+const express = require('express');
+const router = express.Router();
+
+router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
+
+async function getNumberOfOrdersCategory(req, response) {
+    const db = await connection();
+    let allorders = await db.execute("SELECT NAMEITEM,S_N FROM orders WHERE STATUS_ORDER= 'Accept'");
+    let allcategory =  await db.execute("SELECT DISTINCT CATEGORY FROM items");
+    db.execute("SELECT NAME,S_N,CATEGORY FROM ITEMS" ,(err, res)=> {
+    let array =[];
+    allcategory.rows.map((cat) => {
+        let obj = {
+            CATEGORY: cat[0], 
+            NUMBER: 0
+        }
+        array.push(obj)
+    })
+    if (!err) {
+        for(let i=0; i<allorders.rows.length; i++)
+        {
+            for(let k=0; k<res.rows.length; k++)
+                if(allorders.rows[i][0] == res.rows[k][0] && allorders.rows[i][1]==res.rows[k][1])
+                {
+                    for(let j=0; j<array.length; j++)
+                        if(array[j].CATEGORY==res.rows[k][2])
+                            array[j].NUMBER++;
+                }
+        }
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
+
+module.exports = { router};
