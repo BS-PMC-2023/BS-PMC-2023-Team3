@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
 router.get('/getNumberAllOrdersPS', getNumberAllOrdersPS);
+router.get('/getNumberOfAllFaulty', getNumberOfAllFaulty);
 
 async function getNumberOfOrdersCategory(req, response) {
     const db = await connection();
@@ -55,6 +56,18 @@ async function getNumberAllOrdersPS(req, response) {
             response.status(400).json({ message: "Somting went wrong" });
     }
     });
+}
+
+async function getNumberOfAllFaulty(req, response) {
+    const db = await connection();
+    db.execute("SELECT COUNT(*) FROM ITEMS WHERE STATUS= 'FAULTY'" ,(err, res)=> {
+    if (!err) {
+        return response.status(200).json(res.rows[0][0]);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+}
+});
 }
 
 module.exports = { router};
