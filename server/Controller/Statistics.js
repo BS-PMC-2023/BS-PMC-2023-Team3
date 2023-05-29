@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/getNumberOfOrdersCategory', getNumberOfOrdersCategory);
+router.get('/getNumberAllOrdersPS', getNumberAllOrdersPS);
 
 async function getNumberOfOrdersCategory(req, response) {
     const db = await connection();
@@ -28,6 +29,26 @@ async function getNumberOfOrdersCategory(req, response) {
                             array[j].NUMBER++;
                 }
         }
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
+
+async function getNumberAllOrdersPS(req, response) {
+    const db = await connection();
+    db.execute("SELECT TYPE,COUNT(*) FROM studio_podcast_order WHERE STATUS='Accept' GROUP BY TYPE" ,(err, res)=> {
+    if (!err) {
+        let array =[];
+        res.rows.map((orders) => {
+            let obj = {
+                TYPE: orders[0], 
+                NUMBER: orders[1]
+            }
+            array.push(obj)
+        })
         return response.status(200).json(array);
     } else {
             console.log(err);
