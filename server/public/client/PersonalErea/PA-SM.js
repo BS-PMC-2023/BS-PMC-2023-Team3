@@ -270,66 +270,158 @@ async function showItem() {
   }
   
 
-  async function showImage() {
-    var imageContainer = document.getElementById("imageContainer");
-    imageContainer.style.display = "block";
+  
+
+var ordersChart;
+var faultyChart;
+var podcastChart;
+
+function itemOrders() {
+  // Get the canvas element
+  var ctx = document.getElementById('OrdersChart').getContext('2d');
+
+  // Define the chart data
+  var ordersData = {
+    labels: ['CAMERA', 'REC', 'APPLE', 'TRIPOD', 'Projectors', 'Cables', 'Convertors'],
+    datasets: [{
+      label: 'OrdersChart',
+      data: [12, 19, 3, 5, 2, 3, 17],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(252, 3, 235, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(252, 3, 235, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  if (faultyChart) {
+    faultyChart.destroy();
   }
-
-
-  function generateChart() {
-    // Get the canvas element
-    var ctx = document.getElementById('myChart').getContext('2d');
-
-    // Define the chart data
-    var data = {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: 'Example Dataset',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
-      }]
-    };
-
-    // Create the chart
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+  if (podcastChart) {
+    podcastChart.destroy();
+  }
+  // Create the OrdersChart
+  ordersChart = new Chart(ctx, {
+    type: 'bar',
+    data: ordersData,
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
         }
       }
-    });
+    }
+  });
+}
+
+function faultyItems() {
+  // Get the canvas element
+  var ctx = document.getElementById('faultyChart').getContext('2d');
+
+  // Define the chart data
+  var faultyData = {
+    labels: ['CAMERA', 'REC', 'APPLE', 'TRIPOD', 'Projectors', 'Cables', 'Convertors'],
+    datasets: [{
+      label: 'faultyChart',
+      data: [12, 19, 3, 5, 2, 3,17],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(252, 3, 235, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(252, 3, 235, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  // Destroy the OrdersChart if it exists
+  if (ordersChart) {
+    ordersChart.destroy();
   }
-
-  /*async function statisticsPage() {
-
-    const username = sessionStorage.username
-    const title = sessionStorage.title
-  
-    
-    if(title == "StorgeManger"){
-      window.location.href = "http://localhost:3001/Statistics";
+  if (podcastChart) {
+    podcastChart.destroy();
+  }
+  // Create the faultyItems chart
+  faultyChart = new Chart(ctx, {
+    type: 'bar',
+    data: faultyData,
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     }
+  });
+}
+
+function podcastOrders() {
+  // Get the canvas element
+  var ctx = document.getElementById('podcastChart').getContext('2d');
+
+  // Define the chart data
+  var podcastData = {
+    labels: ['PODCAST', 'STUDIO'],
+    datasets: [{
+      label: 'podcastChart',
+      data: [4, 2],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  if (faultyChart) {
+    faultyChart.destroy();
+  }
+  if (ordersChart) {
+    ordersChart.destroy();
+  }
+  // Create the OrdersChart
+  podcastChart = new Chart(ctx, {
+    type: 'bar',
+    data: podcastData,
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     }
-    */
-  
+  });
+}
