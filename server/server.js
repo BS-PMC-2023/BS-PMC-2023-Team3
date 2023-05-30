@@ -88,7 +88,7 @@ app.use('/users', users);
 app.use('/warehouse', warehouse);
 app.use('/orders',orders);
 app.use('/notification',notification);
-app.use('/statistics', statistics)
+app.use('/statistics', statistics);
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
 
 module.exports = app;

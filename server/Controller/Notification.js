@@ -238,7 +238,8 @@ async function getNumberNotReadNoti(req, response) {
 
 async function UpdateToRead(req, response) {
     const db = await connection();
-    db.execute("UPDATE notifications SET READ= 'YES' WHERE ASSOCIATION= :1 AND DESCRIPTION= :2", [req.body.ASSOCIATION,req.body.DESCRIPTION] ,(err, res)=> {
+    let user = [req.body.ASSOCIATION];
+    db.execute("UPDATE notifications SET READ= 'YES' WHERE ASSOCIATION= :1", user ,(err, res)=> {
     if (res.rowsAffected == 0) {
         return response.status(400).json({ message: "This notification is unavailable" });
     }
