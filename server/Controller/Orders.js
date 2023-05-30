@@ -125,9 +125,7 @@ async function addOrderForPS(req, response) {
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS , date_time = req.body.DATE_TIME, type = req.body.TYPE,number= req.body.NUM;
-    let sqlForUsername = "SELECT USERNAME from Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
-    let username = await db.execute(sqlForUsername,[type, number, date_time] );
+    let status = req.body.STATUS , date_time = req.body.DATE_TIME, type = req.body.TYPE,number= req.body.NUM, user = req.body.USERNAME;
 
     if(status == 'Reject')
     {
@@ -147,7 +145,7 @@ async function UpdateStatusOrderPS(req, response) {
 
     sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
     let description = "The warehouse manager '"+status+"' your order for "+ type + " number '"+ number+ "' on " + date_time;
-    db.execute(sql,[description,username.rows[0][0]] ,  (err, res) => {
+    db.execute(sql,[description,user] ,  (err, res) => {
         if (err) {
             console.log(err);
             return response.status(400).json({ message: "failed add notification" });
