@@ -10,6 +10,7 @@ router.post('/UpdateStatusOrderItem', UpdateStatusOrderItem);
 router.get('/getAllOrdersItem', getAllOrdersItem);
 router.get('/getAllOrderItemForUser', getAllOrderItemForUser);
 router.get('/getOrderAcceptForUser', getOrderAcceptForUser);
+router.get('/getAllOrderAccept', getAllOrderAccept);
 router.get('/getOrderForStatus', getOrderForStatus);
 router.post('/addorder', addOrder);
 
@@ -331,6 +332,35 @@ async function getOrderAcceptForUser(req, response) {
     }
     });
 }
+
+
+async function getAllOrderAccept(req, response) {
+    const db = await connection();
+    db.execute("SELECT * FROM orders WHERE STATUS_ORDER= 'Accept'",(err, res)=> {
+    if (res.rows.length == 0) {
+        return response.status(400).json({ message: "Orders with Accept status is not found" });
+    }
+    if (!err) {
+        let array =[];
+        res.rows.map((orders) => {
+            let obj = {
+                USERNAME: orders[0], 
+                NAMEITEM: orders[1],
+                S_N: orders[2],
+                BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
+                RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
+                STATUS: orders[5]
+            }
+            array.push(obj)
+        })
+        return response.status(200).json(array);
+    } else {
+            console.log(err);
+            response.status(400).json({ message: "Somting went wrong" });
+    }
+    });
+}
+
 
 async function getOrderForStatus(req, response) {
     const db = await connection();
