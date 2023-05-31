@@ -172,20 +172,17 @@ async function UpdateStatusOrderPS(req, response) {
       if (err) {
         return response.status(400).json({ message: "Something went wrong" });
       }
-  
-      sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-      let description = "The warehouse manager '" + status + "' your order for " + type + " number '" + number + "' on " + date_time;
-      db.execute(sql, [description, user], (err, res) => {
-        if (err) {
-          console.log(err);
-          return response.status(400).json({ message: "failed add notification" });
-        } else {
-          console.log(res)
-          if (res.rowsAffected > 0) {
+      if (res.rowsAffected > 0) {
+        sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+        let description = "The warehouse manager '" + status + "' your order for " + type + " number '" + number + "' on " + date_time;
+        db.execute(sql, [description, user], (err, res) => {
+            if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "failed add notification" });
+            }
+        });
             return response.status(200).json({ message: "update successfully!" });
           }
-        }
-      });
     });
   }
   
