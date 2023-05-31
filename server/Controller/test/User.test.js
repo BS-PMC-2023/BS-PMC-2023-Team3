@@ -29,21 +29,21 @@ describe("POST /users/login", () => {
 });
 
 
-// describe("POST /users/register", () => {
-//     it("It should respond 'New user created successfully'", async () => {
-//         const newUser = await request(app).post("/users/register").send({
-//             USERNAME: 'ddi',
-//             PASSWORD: '123',
-//             FIRSTNAME: 'dori',
-//             LASTNAME: 'fourer',
-//             EMAIL: 'ddi@gmail.com',
-//             BIRTHDAY: '01/01/2000'
-//         });
-//         expect(newUser.body.message).toBe("New user created successfully");
-//         expect(newUser.statusCode).toBe(200);
+describe("POST /users/register", () => {
+    it("It should respond 'New user created successfully'", async () => {
+        const newUser = await request(app).post("/users/register").send({
+            USERNAME: 'ddi',
+            PASSWORD: '123',
+            FIRSTNAME: 'dori',
+            LASTNAME: 'fourer',
+            EMAIL: 'ddi@gmail.com',
+            BIRTHDAY: '01/01/2000'
+        });
+        expect(newUser.body.message).toBe("New user created successfully");
+        expect(newUser.statusCode).toBe(200);
 
-//     });
-// });
+    });
+});
 
 describe("POST /users/register", () => {
     it("It should respond 'Existing username or existing email'", async () => {
