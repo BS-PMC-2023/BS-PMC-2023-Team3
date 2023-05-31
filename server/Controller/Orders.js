@@ -160,11 +160,11 @@ async function UpdateStatusOrderPS(req, response) {
       user = req.body.USERNAME;
   
     if (status == 'Reject') {
-      sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE = :1 AND NUM = :2 AND DATE_TIME = TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
+      sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
       val = [type, number, date_time];
     }
     if (status == 'Accept') {
-      sql = "UPDATE Studio_Podcast_Order SET STATUS = :1 WHERE TYPE = :2 AND NUM = :3 AND DATE_TIME = TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
+      sql = "UPDATE Studio_Podcast_Order SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
       val = [status, type, number, date_time];
     }
   
