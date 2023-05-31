@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start-server": "npm start",
+    "test:integration": "npm run start-server && npm run run-tests"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
@@ -13,6 +15,7 @@
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
     "oracledb": "^5.5.0",
+    "puppeteer": "^20.4.0",
     "save-dev": "^0.0.1-security",
     "sequelize": "^6.11.0"
   },
