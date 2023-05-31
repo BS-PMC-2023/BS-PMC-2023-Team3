@@ -102,26 +102,41 @@ async function addOrderForPS(req, response) {
             console.log(err);
             return response.status(400).json({ message: "The podcast or studio is busy at the time you chose" });
         } else {
+            sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+            let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
+            console.log(description);
+            db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+                if (err) {
+                    console.log(err);
+                    return response.status(400).json({ message: "failed add notification" });
+                } 
+                else {
+                    console.log(res)
+                    if (res.rowsAffected > 0) {
+                        return response.json({ message: "New order created successfully" });
+                    }
+        }});
             console.log(res)
             if (res.rowsAffected == 0) {
                 return response.status(400).json({ message: "Something went wrong" });
             }
         }
     });
-    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-    let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
-    console.log(description);
-    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
-        if (err) {
-            console.log(err);
-            return response.status(400).json({ message: "failed add notification" });
-        } else {
-            console.log(res)
-            if (res.rowsAffected > 0) {
-                return response.json({ message: "New order created successfully" });
-            }
-}});
 }
+//     sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+//     let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
+//     console.log(description);
+//     db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+//         if (err) {
+//             console.log(err);
+//             return response.status(400).json({ message: "failed add notification" });
+//         } else {
+//             console.log(res)
+//             if (res.rowsAffected > 0) {
+//                 return response.json({ message: "New order created successfully" });
+//             }
+// }});
+// }
 
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
