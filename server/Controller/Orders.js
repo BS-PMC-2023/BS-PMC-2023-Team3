@@ -242,30 +242,38 @@ async function getAllOrderPSForUser(req, response) {
 
 async function getOrderForStatusPS(req, response) {
     const db = await connection();
-    let status= [req.query.STATUS];
-    db.execute("SELECT * FROM studio_podcast_order WHERE STATUS= :1", status ,(err, res)=> {
-    if (res.rows.length == 0) {
-        return response.status(400).json({ message: "Orders with '" +status+ "' status is not found" });
-    }
-    if (!err) {
-        let array =[];
-        res.rows.map((orders) => {
-            let obj = {
-                USERNAME: orders[0], 
-                TYPE: orders[1],
-                NUM: orders[2],
-                DATE_TIME: orders[3].toLocaleString('he-IL').split('').join(''),
-                STATUS: orders[4]
-            }
-            array.push(obj)
-        })
-        return response.status(200).json(array);
-    } else {
+    let status = [req.query.STATUS];
+    db.execute("SELECT * FROM studio_podcast_order WHERE STATUS = :1", status, (err, res) => {
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "Orders with '" + status + "' status is not found" });
+        }
+        if (!err) {
+            let array = [];
+            var options = {
+                year: "numeric",
+                month: "2-digit",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric"
+            };
+            res.rows.map((orders) => {
+                let obj = {
+                    USERNAME: orders[0],
+                    TYPE: orders[1],
+                    NUM: orders[2],
+                    DATE_TIME: orders[3].toLocaleString('he-IL', options).split('').join(''),
+                    STATUS: orders[4]
+                };
+                array.push(obj);
+            });
+            return response.status(200).json(array);
+        } else {
             console.log(err);
-            response.status(400).json({ message: "Somting went wrong" });
-    }
+            response.status(400).json({ message: "Something went wrong" });
+        }
     });
 }
+
 
 async function UpdateStatusOrderItem(req, response) {
     const db = await connection();

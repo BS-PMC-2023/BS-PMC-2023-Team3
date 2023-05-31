@@ -362,7 +362,7 @@ async function showPS() {
     elements[0].remove();
   }
 
-  let response = await fetch('http://localhost:3001/orders/getOrderForStatus?STATUS_ORDER=In-processed', {
+  let response = await fetch('http://localhost:3001/orders/getOrderForStatusPS?STATUS=In-processed', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -433,7 +433,7 @@ async function showPS() {
 }
 
 async function updateOrderStatusPS(username,type,num, dateTime, status) {
- 
+
 
   let requestBody = {
     USERNAME: username,
