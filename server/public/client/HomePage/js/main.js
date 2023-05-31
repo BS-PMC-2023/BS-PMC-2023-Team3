@@ -96,8 +96,6 @@ async function ChoosePage() {
 	else{
 		window.location.href = "http://localhost:3001/Stu_Lec_profile";
 	}
-	
-  
   }
 
   function clearSessionStorage() {
