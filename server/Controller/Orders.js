@@ -141,37 +141,42 @@ async function addOrderForPS(req, response) {
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS , date_time = req.body.DATE_TIME, type = req.body.TYPE,number= req.body.NUM, user = req.body.USERNAME;
-
-    if(status == 'Reject')
-    {
-        sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
-        val = [type, number, date_time];
+    let status = req.body.STATUS,
+      date_time = req.body.DATE_TIME,
+      type = req.body.TYPE,
+      number = req.body.NUM,
+      user = req.body.USERNAME;
+  
+    if (status == 'Reject') {
+      sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE = :1 AND NUM = :2 AND DATE_TIME = TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
+      val = [type, number, date_time];
     }
-    if(status == 'Accept') 
-    {
-        sql = "UPDATE Studio_Podcast_Order SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
-        val = [status,type, number, date_time];
+    if (status == 'Accept') {
+      sql = "UPDATE Studio_Podcast_Order SET STATUS = :1 WHERE TYPE = :2 AND NUM = :3 AND DATE_TIME = TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
+      val = [status, type, number, date_time];
     }
+  
     db.execute(sql, val, (err, res) => {
+      if (err) {
+        return response.status(400).json({ message: "Something went wrong" });
+      }
+  
+      sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+      let description = "The warehouse manager '" + status + "' your order for " + type + " number '" + number + "' on " + date_time;
+      db.execute(sql, [description, user], (err, res) => {
         if (err) {
-            response.status(400).json({ message: "Something went wrong" });
-        }
-    });
-
-    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-    let description = "The warehouse manager '"+status+"' your order for "+ type + " number '"+ number+ "' on " + date_time;
-    db.execute(sql,[description,user] ,  (err, res) => {
-        if (err) {
-            console.log(err);
-            return response.status(400).json({ message: "failed add notification" });
+          console.log(err);
+          return response.status(400).json({ message: "failed add notification" });
         } else {
-            console.log(res)
-            if (res.rowsAffected > 0) {
-                response.status(200).json({ message: "update successfully!" });
-            }
-}});
-}
+          console.log(res)
+          if (res.rowsAffected > 0) {
+            return response.status(200).json({ message: "update successfully!" });
+          }
+        }
+      });
+    });
+  }
+  
 
 async function getAllOrdersPS(req, response) {
     const db = await connection();
