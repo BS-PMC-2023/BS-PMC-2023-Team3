@@ -108,19 +108,19 @@ async function addOrderForPS(req, response) {
             }
         }
     });
-//     sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-//     let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
-//     console.log(description);
-//     db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
-//         if (err) {
-//             console.log(err);
-//             return response.status(400).json({ message: "failed add notification" });
-//         } else {
-//             console.log(res)
-//             if (res.rowsAffected > 0) {
-//                 return response.json({ message: "New order created successfully" });
-//             }
-// }});
+    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+    let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
+    console.log(description);
+    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(400).json({ message: "failed add notification" });
+        } else {
+            console.log(res)
+            if (res.rowsAffected > 0) {
+                return response.json({ message: "New order created successfully" });
+            }
+}});
 }
 
 async function UpdateStatusOrderPS(req, response) {
