@@ -7,7 +7,8 @@ describe("POST /warehouse/UpdateItem", () => {
         const Item = await request(app).post("/warehouse/UpdateItem").send({
             STATUS: 'IN',
             NAME: 'Sony A7III',
-            S_N: '4476762'
+            S_N: '4476762',
+            USERNAME: 'Yam123'
         });
         expect(Item.body.message).toBe("update successfully!");
         expect(Item.statusCode).toBe(200);
@@ -22,7 +23,8 @@ describe("POST /warehouse/UpdateItem", () => {
             NAME: 'Sony A7III',
             S_N: '4476762',
             BORROW_DATE: '12.05.2023',
-            RETURN_DATE: '15.05.2023'
+            RETURN_DATE: '15.05.2023',
+            USERNAME: 'Yam123'
         });
         expect(Item.body.message).toBe("update successfully!");
         expect(Item.statusCode).toBe(200);
@@ -35,7 +37,8 @@ describe("POST /warehouse/UpdateItem", () => {
         const Item = await request(app).post("/warehouse/UpdateItem").send({
             STATUS: 'FAULTY',
             NAME: 'Sony A7III',
-            S_N: '4476762'
+            S_N: '4476762',
+               USERNAME: 'Yam123'
         });
         expect(Item.body.message).toBe("update successfully!");
         expect(Item.statusCode).toBe(200);

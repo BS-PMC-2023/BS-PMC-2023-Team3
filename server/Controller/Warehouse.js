@@ -15,8 +15,9 @@ router.get('/getAllPS', getStudiosAndPodcasts);
 async function UpdateItem(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N;
-    
+    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N, user= req.body.USERNAME;
+    sql = "SELECT TITLE FROM USERS WHERE USERNAME= :1"
+    let title = await db.execute(sql,[user]);
     if(status == 'OUT')
     {
         let bor_date = req.body.BORROW_DATE;
@@ -31,10 +32,23 @@ async function UpdateItem(req, response) {
     }
     db.execute(sql, val, (err, res) => {
         if (err) {
-            response.status(400).json({ message: "Something went wrong" });
-        } else {
-            response.status(200).json({ message: "update successfully!" });
-        }
+           return response.status(400).json({ message: "Something went wrong" });
+        } else 
+            if(res.rowsAffected > 0)
+            {
+                if(status == 'FAULTY' && title.rows[0][0]!="StorgeManger")
+                {
+                    let description = user + " has updated item '"+ item_name +"' with serial number '"+ item_sn +"' as a FAULT ";
+                    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+                    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        return response.status(400).json({ message: "Something went wrong" });
+                        
+                    }});
+                }
+                return response.status(200).json({ message: "update successfully!" });
+            }
     });
 }
 

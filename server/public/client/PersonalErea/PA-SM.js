@@ -161,8 +161,7 @@ const itemHtml = `
     <p>${item.s_n}:מקט הפריט</p>
   </div>
       <div class="bio-chart">
-      <button class="button-14" role="button">תקין</button>
-      <button class="button-14" role="button">יצא מכלל שימוש</button>
+      <button class="button-14" role="button" onclick="updateStatusToIn('${item.name}','${item.s_n}','IN')">Proper</button>
         <div style="display: inline; width: 100px; height: 100px">
           <canvas width="100" height="100px"></canvas
           ><input
@@ -206,6 +205,39 @@ const itemHtml = `
 });
 }
 
+async function updateStatusToIn(nameitem,s_n,status) {
+ 
+
+  let requestBody = {
+    NAME: nameitem,
+    S_N: s_n,
+    STATUS: status
+  };
+
+  // Call the UpdateStatusOrderPS endpoint
+  let response = await fetch('http://localhost:3001/warehouse/UpdateItem', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  });
+
+  // Get the response data as JSON
+  let body = await response.json();
+
+  if (response.ok) {
+    // Display success message
+    alert(body.message);
+  } else {
+    // Display error message
+    console.log(body);
+    alert(body.message || 'Failed to update order status');
+  }
+  location.reload();
+}
+
+
 
 async function showItem() {
   var d = document.getElementById("items");
@@ -215,7 +247,7 @@ async function showItem() {
   }
 
   // Call for GET to the URL
-  let response = await fetch('http://localhost:3001/orders/getAllOrdersItem', {
+  let response = await fetch('http://localhost:3001/orders/getOrderForStatus?STATUS_ORDER=In-processed', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -244,8 +276,8 @@ async function showItem() {
             <p>${item.STATUS}: סטטוס</p>
           </div>
           <div class="bio-chart">
-            <button class="button-14" role="button" onclick="updateOrderStatus('${item.USERNAME}', '${item.NAMEITEM}', '${item.S_N}', '${item.BORROW_DATE}', 'Reject')">Reject</button>
             <button class="button-14" role="button" onclick="updateOrderStatus('${item.USERNAME}', '${item.NAMEITEM}', '${item.S_N}', '${item.BORROW_DATE}', 'Accept')">Accept</button>
+            <button class="button-14" role="button" onclick="updateOrderStatus('${item.USERNAME}', '${item.NAMEITEM}', '${item.S_N}', '${item.BORROW_DATE}', 'Reject')">Reject</button>
             <div style="display: inline; width: 100px; height: 100px">
               <canvas width="100" height="100px"></canvas>
               <input
@@ -318,18 +350,19 @@ async function updateOrderStatus(username, itemName, itemSN, borrowDate, status)
     console.log(body);
     alert(body.message || 'Failed to update order status');
   }
+  location.reload();
 }
 
 
 
-/*async function showPS() {
+async function showPS() {
   var d = document.getElementById("items");
   var elements = d.getElementsByClassName("col-md-6");
   while (elements.length > 0) {
     elements[0].remove();
   }
 
-  let response = await fetch('http://localhost:3001/orders/getAllOrdersPS', {
+  let response = await fetch('http://localhost:3001/orders/getOrderForStatusPS?STATUS=In-processed', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -349,13 +382,14 @@ async function updateOrderStatus(username, itemName, itemSN, borrowDate, status)
           <div class="panel-body">
             <div class="bio-desk">
               <h4 class="red">${item.USERNAME}:שם המשאיל</h4>
+              <p>${item.TYPE}: סוג</p>
               <p>${item.NUM}:מספר חדר</p>
               <p>${item.DATE_TIME}:תאריך השאלה</p>
               <p>${item.STATUS}: סטטוס</p>
             </div>
             <div class="bio-chart">
-              <button class="button-14" role="button" onclick="updateOrderStatusPS('${item.USERNAME}', '${item.NUM}', '${item.DATE_TIME}', 'Accept')">Accept</button>
-              <button class="button-14" role="button" onclick="updateOrderStatusPS('${item.USERNAME}', '${item.NUM}', '${item.DATE_TIME}', 'Reject')">Reject</button>
+              <button class="button-14" role="button" onclick="updateOrderStatusPS('${item.USERNAME}','${item.TYPE}', '${item.NUM}', '${item.DATE_TIME}', 'Accept')">Accept</button>
+              <button class="button-14" role="button" onclick="updateOrderStatusPS('${item.USERNAME}','${item.TYPE}', '${item.NUM}', '${item.DATE_TIME}', 'Reject')">Reject</button>
               <div style="display: inline; width: 100px; height: 100px">
                 <canvas width="100" height="100px"></canvas>
                 <input
@@ -398,14 +432,15 @@ async function updateOrderStatus(username, itemName, itemSN, borrowDate, status)
   });
 }
 
-async function updateOrderStatusPS(username, num, dateTime, status) {
-  let updatedStatus = status
+async function updateOrderStatusPS(username,type,num, dateTime, status) {
+
 
   let requestBody = {
     USERNAME: username,
+    TYPE: type,
     NUM: num,
     DATE_TIME: dateTime,
-    STATUS: updatedStatus
+    STATUS: status
   };
 
   // Call the UpdateStatusOrderPS endpoint
@@ -428,7 +463,8 @@ async function updateOrderStatusPS(username, num, dateTime, status) {
     console.log(body);
     alert(body.message || 'Failed to update order status');
   }
-}*/
+  location.reload();
+}
 
 
   

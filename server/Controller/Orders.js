@@ -6,6 +6,7 @@ router.post('/addOrderForPS', addOrderForPS);
 router.post('/UpdateStatusOrderPS', UpdateStatusOrderPS);
 router.get('/getAllOrdersPS', getAllOrdersPS);
 router.get('/getAllOrderPSForUser', getAllOrderPSForUser);
+router.get('/getOrderForStatusPS', getOrderForStatusPS);
 router.post('/UpdateStatusOrderItem', UpdateStatusOrderItem);
 router.get('/getAllOrdersItem', getAllOrdersItem);
 router.get('/getAllOrderItemForUser', getAllOrderItemForUser);
@@ -20,13 +21,9 @@ async function addOrder(req, response) {
     let orderObj = req.body;
     let sql = `SELECT * from orders WHERE (BORROW_DATE <= to_date(:1,'DD/MM/YYYY') AND RETURN_DATE >= to_date(:1,'DD/MM/YYYY'))`;
     let allOrdersBetween = await db.execute(sql,[orderObj.BORROW_DATE] );
-    console.log(allOrdersBetween);
     sql =`SELECT * from orders WHERE (BORROW_DATE > to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE < to_date(:2,'DD/MM/YYYY'))`;
     let allOrdersBefore = await db.execute(sql,[orderObj.BORROW_DATE,orderObj.RETURN_DATE] );
-    console.log(allOrdersBefore);
-    
-    sql = `INSERT INTO orders (USERNAME, NAMEITEM, S_N, BORROW_DATE, RETURN_DATE) 
-            VALUES(:1, :2, :3, to_date(:4 , 'DD/MM/YYYY'), to_date(:5 , 'DD/MM/YYYY'))`;
+    let title = await db.execute(`SELECT TITLE from users WHERE USERNAME= :1`,[orderObj.USERNAME] );
 
     let values = [
         orderObj.USERNAME,
@@ -36,52 +33,83 @@ async function addOrder(req, response) {
         orderObj.RETURN_DATE
     ];
     let temp = values;
-    if(allOrdersBetween.rows.length > 0)
+    console.log(title.rows[0][0]);
+    if(title.rows[0][0]== 'Lecture')
     {
         for(let i=0;i<allOrdersBetween.rows.length;i++)
         {
             if(allOrdersBetween.rows[i][1] == orderObj.NAMEITEM && allOrdersBetween.rows[i][2] == orderObj.S_N)
             {
-                if(allOrdersBetween.rows[i][5] != 'Reject')
-                    return response.status(400).json({ message: "The selected dates are not available for this item" });
+                sql = "DELETE FROM orders WHERE USERNAME= :1 AND NAMEITEM= :2 AND S_N= :3 AND BORROW_DATE= to_date(:4,'DD/MM/YYYY')";
+                val = [allOrdersBetween.rows[i][0],allOrdersBetween.rows[i][1],allOrdersBetween.rows[i][2],allOrdersBetween.rows[i][3].toLocaleDateString('he-IL').split('/').join('/')];
+                console.log(val);
+                db.execute(sql,val,  (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        return response.status(400).json({ message: "Something went wrong" });
+                    }
+                    else {
+                        sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+                        let description = "The warehouse manager 'Reject' your order for " + allOrdersBetween.rows[i][1] + " with serial number '" + allOrdersBetween.rows[i][2] + "' on dates " + allOrdersBetween.rows[i][3].toLocaleDateString('he-IL').split('/').join('/') +" - "+ allOrdersBetween.rows[i][4].toLocaleDateString('he-IL').split('/').join('/');
+                        db.execute(sql,[description, allOrdersBetween.rows[i][0]] ,  (err, res) => {
+                            if (err) {
+                                console.log(err);
+                                return response.status(400).json({ message: "Something went wrong" });
+                                
+                    }});
+                    
+                }});
             }
         }
-    }
-    if(allOrdersBefore.rows.length > 0)
-    {
-        for(let i=0;i<allOrdersBefore.rows.length;i++)
+    } else {
+        if(allOrdersBetween.rows.length > 0)
         {
-            if(allOrdersBefore.rows[i][1] == orderObj.NAMEITEM && allOrdersBefore.rows[i][2] == orderObj.S_N)
+            for(let i=0;i<allOrdersBetween.rows.length;i++)
             {
-                if(allOrdersBefore.rows[i][5] != 'Reject')
-                    return response.status(400).json({ message: "The selected dates are not available for this item" });
+                if(allOrdersBetween.rows[i][1] == orderObj.NAMEITEM && allOrdersBetween.rows[i][2] == orderObj.S_N)
+                {
+                    if(allOrdersBetween.rows[i][5] != 'Reject')
+                        return response.status(400).json({ message: "The selected dates are not available for this item" });
+                }
+            }
+        }
+        if(allOrdersBefore.rows.length > 0)
+        {
+            for(let i=0;i<allOrdersBefore.rows.length;i++)
+            {
+                if(allOrdersBefore.rows[i][1] == orderObj.NAMEITEM && allOrdersBefore.rows[i][2] == orderObj.S_N)
+                {
+                    if(allOrdersBefore.rows[i][5] != 'Reject')
+                        return response.status(400).json({ message: "The selected dates are not available for this item" });
+                }
             }
         }
     }
+    sql = `INSERT INTO orders (USERNAME, NAMEITEM, S_N, BORROW_DATE, RETURN_DATE) 
+    VALUES(:1, :2, :3, to_date(:4 , 'DD/MM/YYYY'), to_date(:5 , 'DD/MM/YYYY'))`;
     db.execute(sql, values,  (err, res) => {
         if (err) {
             console.log(err);
             return response.status(400).json({ message: "Existing order" });
         } else {
-            console.log(res)
-            if (res.rowsAffected == 0) 
-                return response.status(400).json({ message: "Something went wrong" });
+            if (res.rowsAffected > 0) {
+                sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+                let description = temp[0]  +" order '" +temp[1] +"' with serial number '"+ temp[2] +"' on dates "+ temp[3] +" - "+temp[4];
+                console.log(description);
+                db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        return response.status(400).json({ message: "failed add notification" });
+                    } else {
+                        console.log(res)
+                        if (res.rowsAffected > 0) {
+                            return response.json({ message: "New order created successfully" });
+                        }
+                }});
+            }
+                else return response.status(400).json({ message: "Something went wrong" });
         }
     });
-    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-    let description = temp[0]  +" order '" +temp[1] +"' with serial number '"+ temp[2] +"' on dates "+ temp[3] +" - "+temp[4];
-    console.log(description);
-    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
-        if (err) {
-            console.log(err);
-            return response.status(400).json({ message: "failed add notification" });
-        } else {
-            console.log(res)
-            if (res.rowsAffected > 0) {
-                return response.json({ message: "New order created successfully" });
-            }
-}});
-
 }
 
 async function addOrderForPS(req, response) {
@@ -102,76 +130,62 @@ async function addOrderForPS(req, response) {
             console.log(err);
             return response.status(400).json({ message: "The podcast or studio is busy at the time you chose" });
         } else {
-            sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-            let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
-            console.log(description);
-            db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+            if (res.rowsAffected > 0) {
+                sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+                let description = temp[0]  +" order " +temp[1] +" number '"+temp[2]+"' on "+ temp[3];
+                console.log(description);
+                db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
                 if (err) {
                     console.log(err);
                     return response.status(400).json({ message: "failed add notification" });
-                } 
-                else {
+                } else {
                     console.log(res)
                     if (res.rowsAffected > 0) {
                         return response.json({ message: "New order created successfully" });
                     }
-        }});
-            console.log(res)
-            if (res.rowsAffected == 0) {
-                return response.status(400).json({ message: "Something went wrong" });
+                }});
             }
-        }
-    });
-}
-//     sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-//     let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
-//     console.log(description);
-//     db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
-//         if (err) {
-//             console.log(err);
-//             return response.status(400).json({ message: "failed add notification" });
-//         } else {
-//             console.log(res)
-//             if (res.rowsAffected > 0) {
-//                 return response.json({ message: "New order created successfully" });
-//             }
-// }});
-// }
+            else return response.status(400).json({ message: "Something went wrong" });
+        
+    }
+});}
 
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS , date_time = req.body.DATE_TIME, type = req.body.TYPE,number= req.body.NUM, user = req.body.USERNAME;
-
-    if(status == 'Reject')
-    {
-        sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
-        val = [type, number, date_time];
+    let status = req.body.STATUS,
+      date_time = req.body.DATE_TIME,
+      type = req.body.TYPE,
+      number = req.body.NUM,
+      user = req.body.USERNAME;
+  
+    if (status == 'Reject') {
+      sql = "DELETE FROM Studio_Podcast_Order WHERE TYPE= :1 AND NUM= :2 AND DATE_TIME= TO_TIMESTAMP(:3, 'DD/MM/YYYY HH24:MI')";
+      val = [type, number, date_time];
     }
-    if(status == 'Accept') 
-    {
-        sql = "UPDATE Studio_Podcast_Order SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
-        val = [status,type, number, date_time];
+    if (status == 'Accept') {
+      sql = "UPDATE Studio_Podcast_Order SET STATUS= :1 WHERE TYPE= :2 AND NUM= :3 AND DATE_TIME= TO_TIMESTAMP(:4, 'DD/MM/YYYY HH24:MI')";
+      val = [status, type, number, date_time];
     }
+  
     db.execute(sql, val, (err, res) => {
-        if (err) {
-            response.status(400).json({ message: "Something went wrong" });
-        }
-    });
-
-    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-    let description = "The warehouse manager '"+status+"' your order for "+ type + " number '"+ number+ "' on " + date_time;
-    db.execute(sql,[description,user] ,  (err, res) => {
-        if (err) {
+      if (err) {
+        return response.status(400).json({ message: "Something went wrong" });
+      }
+      if (res.rowsAffected > 0) {
+        sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+        let description = "The warehouse manager '" + status + "' your order for " + type + " number '" + number + "' on " + date_time;
+        db.execute(sql, [description, user], (err, res) => {
+            if (err) {
             console.log(err);
             return response.status(400).json({ message: "failed add notification" });
-        } else {
-            console.log(res)
-            if (res.rowsAffected > 0) {
-                response.status(200).json({ message: "update successfully!" });
             }
-}});
-}
+        });
+            return response.status(200).json({ message: "update successfully!" });
+          }
+    });
+  }
+  
 
 async function getAllOrdersPS(req, response) {
     const db = await connection();
@@ -225,6 +239,41 @@ async function getAllOrderPSForUser(req, response) {
     }
     });
 }
+
+async function getOrderForStatusPS(req, response) {
+    const db = await connection();
+    let status = [req.query.STATUS];
+    db.execute("SELECT * FROM studio_podcast_order WHERE STATUS = :1", status, (err, res) => {
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "Orders with '" + status + "' status is not found" });
+        }
+        if (!err) {
+            let array = [];
+            var options = {
+                year: "numeric",
+                month: "2-digit",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric"
+            };
+            res.rows.map((orders) => {
+                let obj = {
+                    USERNAME: orders[0],
+                    TYPE: orders[1],
+                    NUM: orders[2],
+                    DATE_TIME: orders[3].toLocaleString('he-IL', options).split('').join(''),
+                    STATUS: orders[4]
+                };
+                array.push(obj);
+            });
+            return response.status(200).json(array);
+        } else {
+            console.log(err);
+            response.status(400).json({ message: "Something went wrong" });
+        }
+    });
+}
+
 
 async function UpdateStatusOrderItem(req, response) {
     const db = await connection();
@@ -306,7 +355,7 @@ async function getAllOrderItemForUser(req, response) {
                 BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
                 RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
                 STATUS: orders[5],
-                DAYS : getOrderForStatus(orders[3].toLocaleDateString('he-IL').split('').join(''),orders[4].toLocaleDateString('he-IL').split('').join(''))
+                DAYS : getDays(orders[3].toLocaleDateString('he-IL').split('').join(''),orders[4].toLocaleDateString('he-IL').split('').join(''))
             }
             array.push(obj)
         })
@@ -398,14 +447,13 @@ async function getOrderForStatus(req, response) {
         })
         return response.status(200).json(array);
     } else {
-            // console.log(status);
             console.log(err);
             response.status(400).json({ message: "Somting went wrong" });
     }
     });
 }
 
-function getOrderForStatus(borrow, ret) {
+function getDays(borrow, ret) {
     borrow = borrow.split('.')[2]+"/"+borrow.split('.')[1]+"/"+borrow.split('.')[0];
     console.log(borrow);
     ret = ret.split('.')[2]+"/"+ret.split('.')[1]+"/"+ret.split('.')[0];
