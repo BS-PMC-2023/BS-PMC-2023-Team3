@@ -141,40 +141,9 @@
   <div class="notification_wrap">
     <div class="notification_icon">
       <i class="fas fa-bell"></i>
-      <span class="badge2">3</span>
+      <span class="badge2" id = "numnoti"></span>
     </div>
-    <div class="dropdown">
-      <div class="notify_item">
-        <div class="notify_img">
-        </div>
-        <div class="notify_info">
-          <p>Alex commented on<span>Timeline Share</span></p>
-          <span class="notify_time">10 minutes ago</span>
-        </div>
-      </div>
-      <div class="notify_item">
-        <div class="notify_img">
-        </div>
-        <div class="notify_info">
-          <p>Ben hur commented on your<span>Timeline Share</span></p>
-          <span class="notify_time">55 minutes ago</span>
-        </div>
-      </div>
-      <div class="notify_item">
-        <div class="notify_img">
-        </div>
-        <div class="notify_info">
-          <p>Meryn trant liked your<span>Cover Picture</span></p>
-          <span class="notify_time">2 hours ago</span>
-        </div>
-      </div>
-      <div class="notify_item">
-        <div class="notify_img">
-        </div>
-        <div class="notify_info">
-          <p>John wick commented on your<span>Profile Picture</span></p>
-          <span class="notify_time">6 hours ago</span>
-        </div>
+    <div class="dropdown" id ="noti">
       </div>
     </div>
   </div>
@@ -193,6 +162,7 @@
         $(document).ready(function(){
           $(".notification_icon .fa-bell").click(function(){
             $(".dropdown").toggleClass("active");
+            ReadNotifiction();
           })
         });
       </script>
@@ -203,6 +173,5 @@
     <script src="js/jquery.sticky.js"></script>
     <script src="js/main.js"></script>
     <script src="js/hp.js"></script>
-
   </body>
 </html>
