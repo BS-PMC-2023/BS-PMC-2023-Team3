@@ -114,9 +114,11 @@ const itemHtml = `
 }
 
 async function updateStatusItem(nameitem,s_n,status) {
- 
+  const username = sessionStorage.username
+
 
   let requestBody = {
+    USERNAME:username,
     NAME: nameitem,
     S_N: s_n,
     STATUS: status
@@ -142,6 +144,7 @@ async function updateStatusItem(nameitem,s_n,status) {
     console.log(body);
     alert(body.message || 'Failed to update order status');
   }
+  location.reload();
 }
 
 
@@ -183,7 +186,6 @@ const itemHtml = `
     <p>${item.DATE_TIME}:תאריך השאלה</p>
   </div>
       <div class="bio-chart">
-        <button class="button-14" role="button">דווח</button>
         <div style="display: inline; width: 100px; height: 100px">
           <canvas width="100" height="100px"></canvas
           ><input
