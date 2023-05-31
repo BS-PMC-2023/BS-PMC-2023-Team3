@@ -98,7 +98,7 @@
     <div class="dropdown" >
       <div class="notification_wrap">
         <div class="notification_icon">
-          <i class="fas fa-bell"></i>
+          <i class="fas fa-bell "></i>
           <span class="badge2" id = "numnoti"></span>
         </div>
         <div class="dropdown"id ="noti">
@@ -116,6 +116,7 @@
       $(document).ready(function(){
         $(".notification_icon .fa-bell").click(function(){
           $(".dropdown").toggleClass("active");
+          ReadNotifiction();
         })
       });
     </script>

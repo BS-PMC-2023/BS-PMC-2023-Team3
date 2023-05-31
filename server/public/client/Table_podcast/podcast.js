@@ -231,17 +231,35 @@ async function NumNotificationUser(){
             d.innerHTML += body;  
     }
 }
+// async function ReadNotifiction(){
+//     username = sessionStorage.username
+
+//     let response = await fetch('http://localhost:3001/notification/UpdateToRead', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             ASSOCIATION:username
+//         }) 
+        
+//     })
+//     //get data from backend response as json!
+//     let body = await response.json();
+//     if(body.message)
+//         alert(body.message);
+// }
 
 
-if(sessionStorage.title == 'StorgeManger')
-{
-    NumNotificationManager();
-    notificationManager();
-}
-else{
-    NumNotificationUser();
-    notificationUser();
-}
+// if(sessionStorage.title == 'StorgeManger')
+// {
+//     NumNotificationManager();
+//     notificationManager();
+// }
+// else{
+//     NumNotificationUser();
+//     notificationUser();
+// }
 
 
 nextpage();

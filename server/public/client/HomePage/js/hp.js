@@ -104,6 +104,30 @@ async function NumNotificationUser(){
     }
 }
 
+async function ReadNotifiction(){
+
+    if (sessionStorage.title == 'StorgeManger')
+        username = 'StorgeManger';
+    else
+        username = sessionStorage.username;
+
+    let response = await fetch('http://localhost:3001/notification/UpdateToRead', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ASSOCIATION:username
+        }) 
+        
+    })
+    //get data from backend response as json!
+    let body = await response.json();
+    if(body.message != "update successfully!" )
+        alert(body.message);
+}
+
+
 
 if(sessionStorage.title == 'StorgeManger')
 {
