@@ -2,27 +2,31 @@
 const itemsPerPage = 8;
 let currentPage = 1;
 
-function openFormorder() {
-    document.getElementById("dateForm").style.display = "block";
+function openFormorder(i) {
+    document.getElementById("dateForm"+i).style.display = "block";
 }
 
-function closeFormorder() {
-    document.getElementById("dateForm").style.display = "none";
+function closeFormorder(i) {
+    document.getElementById("dateForm"+i).style.display = "none";
 }
 
-async function orderpodcast(type , num ){
+async function orderpodcast(type , num,i ){
 
-    let date = document.getElementById("date_ps").value;
-    console.log(date)
+    let date = document.getElementById("date_ps"+i).value;
     date = date.split('-')[2]+"/"+date.split('-')[1]+"/"+date.split('-')[0];
-    let time = document.getElementById("time_ps").value;
-    console.log(time)
+    let time = document.getElementById("time_ps"+i).value;
     const my_date = date + " " + time;
-
     if(date == null || time == null ){
         alert("Enter Date and time");
         return;
     }    
+
+    console.log(type)
+    console.log(num)
+    console.log(my_date)
+
+
+
 
     const username = sessionStorage.username; 
     //call for get to the url:
@@ -69,8 +73,10 @@ const endIndex = startIndex + itemsPerPage;
 const paginatedItems = body.slice(startIndex, endIndex);
 console.log(itemsPerPage);
 d.innerHTML = '';
+i = 0
 
-paginatedItems.forEach((item) => {
+paginatedItems.forEach((item) => { 
+    i++
     if(sessionStorage.title != "StorageManger" ){
         document.getElementById("additem").hidden = true;
     }
@@ -92,18 +98,18 @@ paginatedItems.forEach((item) => {
       <div class="mt-3 pt-1">
 
       <div class="d-flex gap-2 pt-4">
-          <button type="button" class="btn btn-primary" onclick ="openFormorder()"> הזמנה</button>
-          <div class="form-popup" id="dateForm">
+          <button type="button" class="btn btn-primary" onclick ="openFormorder(${i})"> הזמנה</button>
+          <div class="form-popup" id="dateForm${i}">
                       <form class="form-container">
-                        <input type="date" id="date_ps" required>
+                        <input type="date" id="date_ps${i}" required>
 
-                        <input type="time" id="time_ps" required>
+                        <input type="time" id="time_ps${i}" required>
 
-                        <button type="button" class="btn btn-primary" onclick = "orderpodcast('${item.TYPE}','${item.NUM}')" >Submit</button>
-                        <button type="button" class="btn btn-danger" onclick="closeFormorder()">Close</button>
+                        <button type="button" class="btn btn-primary" onclick = "orderpodcast('${item.TYPE}', '${item.NUM}',${i})" >Submit</button>
+                        <button type="button" class="btn btn-danger" onclick="closeFormorder(${i})">Close</button>
                       </form>
                     </div>
-      </div>
+            </div>
         </div>
       </div>
     </div>`
