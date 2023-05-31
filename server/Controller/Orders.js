@@ -24,7 +24,7 @@ async function addOrder(req, response) {
     sql =`SELECT * from orders WHERE (BORROW_DATE > to_date(:1, 'DD/MM/YYYY') AND BORROW_DATE < to_date(:2,'DD/MM/YYYY'))`;
     let allOrdersBefore = await db.execute(sql,[orderObj.BORROW_DATE,orderObj.RETURN_DATE] );
     console.log(allOrdersBefore);
-    
+    let title = await db.execute(`SELECT TITLE from users WHERE USERNAME= :1`,[orderObj.USERNAME] );
     sql = `INSERT INTO orders (USERNAME, NAMEITEM, S_N, BORROW_DATE, RETURN_DATE) 
             VALUES(:1, :2, :3, to_date(:4 , 'DD/MM/YYYY'), to_date(:5 , 'DD/MM/YYYY'))`;
 
@@ -36,7 +36,23 @@ async function addOrder(req, response) {
         orderObj.RETURN_DATE
     ];
     let temp = values;
-    if(allOrdersBetween.rows.length > 0)
+    if(title.rows[0][0]== 'Lecture')
+    {
+        for(let i=0;i<allOrdersBetween.rows.length;i++)
+        {
+            if(allOrdersBetween.rows[i][1] == orderObj.NAMEITEM && allOrdersBetween.rows[i][2] == orderObj.S_N)
+            {
+                sql = "UPDATE orders SET STATUS_ORDER= 'Reject' WHERE USERNAME= :1 AND NAMEITEM= :2 AND S_N= :3 AND BORROW_DATE= to_date(:4,'DD/MM/YYYY')";
+                val = [ values[0], values[1], values[2], values[3]];
+                db.execute(sql,val,  (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        return response.status(400).json({ message: "Something went wrong" });
+                    }});
+            }
+        }
+    }
+    else if(allOrdersBetween.rows.length > 0)
     {
         for(let i=0;i<allOrdersBetween.rows.length;i++)
         {
@@ -102,26 +118,25 @@ async function addOrderForPS(req, response) {
             console.log(err);
             return response.status(400).json({ message: "The podcast or studio is busy at the time you chose" });
         } else {
-            console.log(res)
-            if (res.rowsAffected == 0) {
-                return response.status(400).json({ message: "Something went wrong" });
-            }
-        }
-    });
-    sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
-    let description = temp[0]  +" order " +temp[1] +" on "+ temp[3];
-    console.log(description);
-    db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
-        if (err) {
-            console.log(err);
-            return response.status(400).json({ message: "failed add notification" });
-        } else {
-            console.log(res)
             if (res.rowsAffected > 0) {
-                return response.json({ message: "New order created successfully" });
+                sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
+                let description = temp[0]  +" order " +temp[1] +" number '"+temp[2]+"' on "+ temp[3];
+                console.log(description);
+                db.execute(sql,[description, "StorgeManger"] ,  (err, res) => {
+                if (err) {
+                    console.log(err);
+                    return response.status(400).json({ message: "failed add notification" });
+                } else {
+                    console.log(res)
+                    if (res.rowsAffected > 0) {
+                        return response.json({ message: "New order created successfully" });
+                    }
+                }});
             }
-}});
-}
+            else return response.status(400).json({ message: "Something went wrong" });
+        
+    }
+});}
 
 async function UpdateStatusOrderPS(req, response) {
     const db = await connection();
