@@ -36,3 +36,11 @@ describe("GET /statistics/getNumberOfFaultyCategory", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /statistics/getNumberAllOrders", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/statistics/getNumberAllOrders");
+        expect(response.body[0]);
+        expect(response.statusCode).toBe(200);
+    });
+});
