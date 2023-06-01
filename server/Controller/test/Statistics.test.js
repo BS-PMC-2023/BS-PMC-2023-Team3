@@ -19,3 +19,11 @@ describe("GET /statistics/getNumberAllOrdersPS", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /statistics/getNumberOfAllFaulty", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/statistics/getNumberOfAllFaulty");
+        expect(response.body[0]);
+        expect(response.statusCode).toBe(200);
+    });
+});
