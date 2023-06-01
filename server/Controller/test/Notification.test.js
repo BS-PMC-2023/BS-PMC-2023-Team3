@@ -54,3 +54,14 @@ describe("GET /notification/CheckDate", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("POST /notification/UpdateToRead", () => {
+    it("It should respond 'update successfully!'", async () => {
+        const Item = await request(app).post("/notification/UpdateToRead").send({
+            ASSOCIATION : 'Yam123'
+        });
+        expect(Item.body.message).toBe("update successfully!");
+        expect(Item.statusCode).toBe(200);
+
+    });
+});
