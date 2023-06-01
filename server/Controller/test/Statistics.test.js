@@ -27,3 +27,12 @@ describe("GET /statistics/getNumberOfAllFaulty", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /statistics/getNumberOfFaultyCategory", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/statistics/getNumberOfFaultyCategory");
+        expect(response.body[0]).toHaveProperty("CATEGORY");
+        expect(response.body[0]).toHaveProperty("NUMBER");
+        expect(response.statusCode).toBe(200);
+    });
+});
