@@ -37,3 +37,12 @@ describe("GET /notification/getAllNoti", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /notification/getNotReadNotiForManager", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/notification/getNotReadNotiForManager");
+        expect(response.body[0]).toHaveProperty("DESCRIPTION");
+        expect(response.body[0]).toHaveProperty("READ");
+        expect(response.statusCode).toBe(200);
+    });
+});
