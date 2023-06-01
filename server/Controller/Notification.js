@@ -90,7 +90,7 @@ async function CheckDate(req, response) {
     let orders = await db.execute(sql,[date] );
     for(let i = 0; i<orders.rows.length; i++)
     {
-        let number = getOrderForStatus(date.toLocaleDateString('he-IL').split('').join(''), orders.rows[i][4].toLocaleDateString('he-IL').split('').join(''));
+        let number = getDays(date.toLocaleDateString('he-IL').split('').join(''), orders.rows[i][4].toLocaleDateString('he-IL').split('').join(''));
         if(number <= 7 && number >0)
         {
             sql = `INSERT INTO notifications (DESCRIPTION, ASSOCIATION) VALUES(:1, :2)`;
@@ -138,7 +138,7 @@ async function CheckDate(req, response) {
     return response.status(200).json({ message: "ok" });
 }
 
-function getOrderForStatus(borrow, ret) {
+function getDays(borrow, ret) {
     borrow = borrow.split('.')[2]+"/"+borrow.split('.')[1]+"/"+borrow.split('.')[0];
     ret = ret.split('.')[2]+"/"+ret.split('.')[1]+"/"+ret.split('.')[0];
     const a = new Date(borrow),
@@ -184,7 +184,7 @@ function dateDiffInDays(a, b) {
 
 async function getNotReadNotiForManager(req, response) {
     const db = await connection();
-    db.execute("SELECT * FROM notifications WHERE association= 'StorgeManger' AND read= 'NO'", user ,(err, res)=> {
+    db.execute("SELECT * FROM notifications WHERE association= 'StorgeManger' AND read= 'NO'" ,(err, res)=> {
     if (res.rows.length == 0) {
         return response.status(400).json({ message: "Orders for StorgeManger is not found" });
     }
