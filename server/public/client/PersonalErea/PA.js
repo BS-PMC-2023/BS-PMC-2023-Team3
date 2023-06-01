@@ -2,6 +2,7 @@ async function goToHomePage() {
   window.location.href = "http://localhost:3001/Connected";
 }
 
+
 async function showProfile() {
 
   const username = sessionStorage.username
