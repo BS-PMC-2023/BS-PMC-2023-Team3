@@ -19,3 +19,12 @@ describe("GET /notification/getAllNotiForManager", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /notification/getNotReadNotiForUser", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/notification/getNotReadNotiForUser?USERNAME=Efrat123");
+        expect(response.body[0]).toHaveProperty("DESCRIPTION");
+        expect(response.body[0]).toHaveProperty("READ");
+        expect(response.statusCode).toBe(200);
+    });
+});
