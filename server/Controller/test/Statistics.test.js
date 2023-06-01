@@ -10,3 +10,12 @@ describe("GET /statistics/getNumberOfOrdersCategory", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /statistics/getNumberAllOrdersPS", () => {
+    it("It should respond with an array of items", async () => {
+        const response = await request(app).get("/statistics/getNumberAllOrdersPS");
+        expect(response.body[0]).toHaveProperty("TYPE");
+        expect(response.body[0]).toHaveProperty("NUMBER");
+        expect(response.statusCode).toBe(200);
+    });
+});
