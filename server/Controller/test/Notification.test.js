@@ -46,3 +46,11 @@ describe("GET /notification/getNotReadNotiForManager", () => {
         expect(response.statusCode).toBe(200);
     });
 });
+
+describe("GET /notification/CheckDate", () => {
+    it("It should respond 'ok'", async () => {
+        const response = await request(app).get("/notification/CheckDate");
+        expect(response.body.message).toBe("ok");
+        expect(response.statusCode).toBe(200);
+    });
+});
