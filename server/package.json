@@ -2,7 +2,7 @@
   "scripts": {
     "test": "jest",
     "start-server": "npm start",
-    "test:integration": "npm run start-server && npm run run-tests",
+    "test:integration": "npm run run-tests",
     "coverage":"nyc --reporter=text npm run test"
   },
   "dependencies": {
