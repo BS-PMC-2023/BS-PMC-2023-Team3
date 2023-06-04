@@ -49,8 +49,7 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         script {
-          def workspacePath = pwd()
-          docker.build('server', "${workspacePath}/server")
+          docker.build('server', "../server/server.js")
         }
       }
     }
