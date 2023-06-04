@@ -10,5 +10,3 @@ services:
     image: "dfm/server"
     ports:
       - "3001:5000"
-    links:
-      - "backend:be"
