@@ -26,6 +26,26 @@ pipeline {
             sh 'cd server && npm run test'
         }
     }
+    stage('Run integration Tests') {
+        agent {
+            docker {
+                image 'node:16-alpine'
+            }
+        }
+        steps {
+            sh 'cd server && npm run test:integration'
+        }
+    }
+    stage('coverage') {
+        agent {
+            docker {
+                image 'node:16-alpine'
+            }
+        }
+        steps {
+            sh 'cd server && npm run coverage'
+        }
+    }
     stage('Build Docker Images') {
       steps {
         script {
