@@ -2,13 +2,13 @@ const connection = require('../mySQL');
 const express = require('express');
 const router = express.Router();
 
-router.post('/login', loginu);
+router.post('/login', login);
 router.post('/register', addUser);
 router.get('/watchUsers', getAllUsers);
 router.get('/watchUser', getUser);
 
 
-async function loginu(req, response) {
+async function login(req, response) {
     const db = await connection();
     db.execute('select * from users where email = :1', [req.body.EMAIL], (err, res) => {
         if (res && res.rows[0]) {
