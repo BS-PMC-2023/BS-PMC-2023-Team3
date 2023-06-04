@@ -49,6 +49,7 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         script {
+          sh 'cd ..' 
           docker.build('server', "../server/server.js")
         }
       }
