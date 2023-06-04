@@ -49,8 +49,9 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         script {
-          sh 'cd server' 
-          docker.build('server', "/server.js")
+          sh 'cd ..' 
+          docker.build('client', "/server/public")
+          docker.build('server', "/server")
         }
       }
     }
