@@ -36,7 +36,6 @@ async function UpdateItem(req, response) {
     }
     db.execute(sql, val, (err, res) => {
         if (err) {
-            console.log(err)
            return response.status(400).json({ message: "Something went wrong" });
         } else 
             if(res.rowsAffected > 0)
@@ -227,9 +226,10 @@ async function getSize(req, response){
 
     async function getItemSort(req, response) {
         const db = await connection();
-        db.execute('SELECT * FROM items WHERE STATUS= "IN"' , (err, res) => {
+        db.execute('SELECT * FROM items' , (err, res) => {
         console.log(res);
         if (res.rows.length == 0) {
+            console.log(err);
             return response.status(400).json({ message: "Somting went wrong" });
         }
         if (!err) {
@@ -254,4 +254,5 @@ async function getSize(req, response){
         }
     });
     }
+
 module.exports = { router};
