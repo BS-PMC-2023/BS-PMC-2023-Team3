@@ -127,8 +127,9 @@ async function ReadNotifiction(){
     //get data from backend response as json!
     let body = await response.json();
     if(body.message != "update successfully!" ) {
-
+        location.reload();
     }
+
 }
 
 
