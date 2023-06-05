@@ -82,9 +82,8 @@ async function deleteI(name , s_n , id ){
         document.getElementById(id).remove();
 }
 
-async function table(page = 1,sort= 0) {
+async function table(page ,sort= 0) {
     gsort =sort
-    page = currentPage
     let body;
     if (gsort == 0){
     //call for get to the url:
