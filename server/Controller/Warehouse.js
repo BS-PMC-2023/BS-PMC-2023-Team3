@@ -15,7 +15,7 @@ router.get('/getAllPS', getStudiosAndPodcasts);
 async function UpdateItem(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N, user= req.body.USERNAME;
+    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N, user= req.body.USERNAME, des_item= req.body.DESCRIPTION;
     sql = "SELECT TITLE FROM USERS WHERE USERNAME= :1"
     let title = await db.execute(sql,[user]);
     if(status == 'OUT')
@@ -25,10 +25,13 @@ async function UpdateItem(req, response) {
         sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3 WHERE NAME= :4 AND S_N= :5";
         val = [status, bor_date, ret_date, item_name, item_sn];
     }
-    else 
+    else if(status == 'IN')
     {
         sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3 WHERE NAME= :4 AND S_N= :5";
         val = [status, 'NULL' , 'NULL', item_name, item_sn];
+    } else {
+        sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3,DESCRIPTION= :4  WHERE NAME= :5 AND S_N= :6";
+        val = [status, 'NULL' , 'NULL',des_item, item_name, item_sn];
     }
     db.execute(sql, val, (err, res) => {
         if (err) {
@@ -48,8 +51,8 @@ async function UpdateItem(req, response) {
                     }});
                 }
                 return response.status(200).json({ message: "update successfully!" });
-            }
-    });
+       }
+});
 }
 
 async function addItem(req, response) {
