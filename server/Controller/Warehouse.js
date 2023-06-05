@@ -226,7 +226,7 @@ async function getSize(req, response){
 
     async function getItemSort(req, response) {
         const db = await connection();
-        db.execute('SELECT * FROM items' , (err, res) => {
+        db.execute('SELECT * FROM items WHERE STATUS= "IN"' , (err, res) => {
         console.log(res);
         if (res.rows.length == 0) {
             return response.status(400).json({ message: "Somting went wrong" });
