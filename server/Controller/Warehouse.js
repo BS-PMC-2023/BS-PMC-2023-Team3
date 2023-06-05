@@ -120,11 +120,19 @@ async function getSize(req, response){
         }
             if (!err) {
                 let array = [];
-               for(let i=0;i<res.rows.length;i++)
-                {
-                    let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+                res.rows.map((items) => {
+                    let obj = { name: items[0],
+                        s_n: items[1], 
+                        category:  items[2], 
+                        ancillary_items:  items[3], 
+                        amount: items[4], 
+                        status: items[5], 
+                        precautions: items[6], 
+                        borrow_date: items[7], 
+                        return_date: items[8], 
+                        description: items[9]}
                     array.push(obj);
-                }
+                })
                 return response.status(200).json(array);
             } else {
                 console.log(err);
@@ -142,11 +150,19 @@ async function getSize(req, response){
         }
         if (!err) {
             let array = [];
-           for(let i=0;i<res.rows.length;i++)
-            {
-                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+            res.rows.map((items) => {
+                let obj = { name: items[0],
+                    s_n: items[1], 
+                    category:  items[2], 
+                    ancillary_items:  items[3], 
+                    amount: items[4], 
+                    status: items[5], 
+                    precautions: items[6], 
+                    borrow_date: items[7], 
+                    return_date: items[8], 
+                    description: items[9]}
                 array.push(obj);
-            }
+            })
             return response.status(200).json(array);
         } else {
                 console.log(err);
@@ -164,11 +180,19 @@ async function getSize(req, response){
         }
         if (!err) {
             let array = [];
-           for(let i=0;i<res.rows.length;i++)
-            {
-                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+            res.rows.map((items) => {
+                let obj = { name: items[0],
+                    s_n: items[1], 
+                    category:  items[2], 
+                    ancillary_items:  items[3], 
+                    amount: items[4], 
+                    status: items[5], 
+                    precautions: items[6], 
+                    borrow_date: items[7], 
+                    return_date: items[8], 
+                    description: items[9]}
                 array.push(obj);
-            }
+            })
             return response.status(200).json(array);
         } else {
                 console.log(err);
@@ -176,7 +200,6 @@ async function getSize(req, response){
         }
         });
     }
-
     async function getStudiosAndPodcasts(req, response) {
         const db = await connection();
         db.execute('select * from studio_podcast' , (err, res) => {
