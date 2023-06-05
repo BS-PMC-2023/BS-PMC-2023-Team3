@@ -8,7 +8,7 @@
 //             USERNAME : 'Yam123',
 //             TYPE : 'Studio',
 //             NUM : '1',
-//             DATE_TIME : '01/06/2023 12:00'
+//             DATE_TIME : '01/06/2023 19:00'
 //         });
 //         expect(Item.body.message).toBe("New order created successfully");
 //         expect(Item.statusCode).toBe(200);
@@ -36,7 +36,7 @@
 //             STATUS : 'Accept',
 //             TYPE : 'Studio',
 //             NUM : '1',
-//             DATE_TIME : '01/06/2023 12:00',
+//             DATE_TIME : '01/06/2023 19:00',
 //             USERNAME: 'Yam123'
 //         });
 //         expect(Item.body.message).toBe("update successfully!");
@@ -59,7 +59,7 @@
 
 // describe("GET /orders/getAllOrderPSForUser", () => {
 //     it("It should respond with an array of orders", async () => {
-//         const response = await request(app).get("/orders/getAllOrderPSForUser?USERNAME=Yam123");
+//         const response = await request(app).get("/orders/getAllOrderPSForUser?USERNAME=Israel123");
 //         expect(response.body[0]).toHaveProperty("USERNAME");
 //         expect(response.body[0]).toHaveProperty("TYPE");
 //         expect(response.body[0]).toHaveProperty("NUM");
@@ -74,7 +74,7 @@
 //         const Item = await request(app).post("/orders/UpdateStatusOrderItem").send({
 //             STATUS_ORDER : 'Accept',
 //             USERNAME : 'Efrat123',
-//             BORROW_DATE : '12/05/2023',
+//             BORROW_DATE : '01/06/2023',
 //             NAMEITEM : 'Sony A7III',
 //             S_N: '4477024'
 //         });
@@ -139,7 +139,7 @@
 
 // describe("GET /orders/getOrderForStatus", () => {
 //     it("It should respond with an array of orders", async () => {
-//         const response = await request(app).get("/orders/getOrderForStatus?STATUS_ORDER=In processed");
+//         const response = await request(app).get("/orders/getOrderForStatus?STATUS_ORDER=In-processed");
 //         expect(response.body[0]).toHaveProperty("USERNAME");
 //         expect(response.body[0]).toHaveProperty("NAMEITEM");
 //         expect(response.body[0]).toHaveProperty("S_N");
@@ -154,8 +154,8 @@
 //     it("It should respond 'New order created successfully'", async () => {
 //         const Item = await request(app).post("/orders/addorder").send({
 //             USERNAME : 'Efrat123',
-//             BORROW_DATE : '05/06/2023',
-//             RETURN_DATE : '08/06/2023',
+//             BORROW_DATE : '05/07/2023',
+//             RETURN_DATE : '08/07/2023',
 //             NAMEITEM : 'Sony A7III',
 //             S_N: '4477024'
 //         });
@@ -169,8 +169,8 @@
 //     it("It should respond 'The selected dates are not available for this item'", async () => {
 //         const Item = await request(app).post("/orders/addorder").send({
 //             USERNAME : 'Efrat123',
-//             BORROW_DATE : '05/06/2023',
-//             RETURN_DATE : '08/06/2023',
+//             BORROW_DATE : '05/07/2023',
+//             RETURN_DATE : '08/07/2023',
 //             NAMEITEM : 'Sony A7III',
 //             S_N: '4477024'
 //         });
