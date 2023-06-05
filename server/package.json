@@ -3,6 +3,7 @@
     "test": "jest",
     "start-server": "npm start",
     "test:integration": "npm run test",
+    "hackton":"npm run test",
     "coverage":"nyc --reporter=text npm run test"
   },
   "dependencies": {

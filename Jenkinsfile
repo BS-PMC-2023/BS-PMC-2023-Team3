@@ -46,6 +46,17 @@ pipeline {
             sh 'cd server && npm run coverage'
         }
     }
+    stage('Hackton') {
+        agent {
+            docker {
+                image 'node:16-alpine'
+            }
+        }
+        steps {
+            sh 'cd server && npm run hackton'
+        }
+    }
+
     stage('Build Docker Images') {
       steps {
         script {
