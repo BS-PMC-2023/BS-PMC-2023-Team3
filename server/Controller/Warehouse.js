@@ -10,12 +10,13 @@ router.get('/watchItemForCat', getItemForCat);
 router.get('/watchItemForStatus', getItemForStatus);
 router.get('/getsize', getSize);
 router.get('/getAllPS', getStudiosAndPodcasts);
+router.get('/getItemSort', getItemSort);
 
 
 async function UpdateItem(req, response) {
     const db = await connection();
     let sql, val;
-    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N, user= req.body.USERNAME;
+    let status = req.body.STATUS, item_name = req.body.NAME, item_sn= req.body.S_N, user= req.body.USERNAME, des_item= req.body.DESCRIPTION;
     sql = "SELECT TITLE FROM USERS WHERE USERNAME= :1"
     let title = await db.execute(sql,[user]);
     if(status == 'OUT')
@@ -25,10 +26,13 @@ async function UpdateItem(req, response) {
         sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3 WHERE NAME= :4 AND S_N= :5";
         val = [status, bor_date, ret_date, item_name, item_sn];
     }
-    else 
+    else if(status == 'IN')
     {
         sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3 WHERE NAME= :4 AND S_N= :5";
         val = [status, 'NULL' , 'NULL', item_name, item_sn];
+    } else {
+        sql = "UPDATE items SET status= :1, BORROW_DATE= :2, RETURN_DATE= :3,DESCRIPTION= :4  WHERE NAME= :5 AND S_N= :6";
+        val = [status, 'NULL' , 'NULL',des_item, item_name, item_sn];
     }
     db.execute(sql, val, (err, res) => {
         if (err) {
@@ -48,8 +52,8 @@ async function UpdateItem(req, response) {
                     }});
                 }
                 return response.status(200).json({ message: "update successfully!" });
-            }
-    });
+       }
+});
 }
 
 async function addItem(req, response) {
@@ -116,11 +120,19 @@ async function getSize(req, response){
         }
             if (!err) {
                 let array = [];
-               for(let i=0;i<res.rows.length;i++)
-                {
-                    let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+                res.rows.map((items) => {
+                    let obj = { name: items[0],
+                        s_n: items[1], 
+                        category:  items[2], 
+                        ancillary_items:  items[3], 
+                        amount: items[4], 
+                        status: items[5], 
+                        precautions: items[6], 
+                        borrow_date: items[7], 
+                        return_date: items[8], 
+                        description: items[9]}
                     array.push(obj);
-                }
+                })
                 return response.status(200).json(array);
             } else {
                 console.log(err);
@@ -138,11 +150,19 @@ async function getSize(req, response){
         }
         if (!err) {
             let array = [];
-           for(let i=0;i<res.rows.length;i++)
-            {
-                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+            res.rows.map((items) => {
+                let obj = { name: items[0],
+                    s_n: items[1], 
+                    category:  items[2], 
+                    ancillary_items:  items[3], 
+                    amount: items[4], 
+                    status: items[5], 
+                    precautions: items[6], 
+                    borrow_date: items[7], 
+                    return_date: items[8], 
+                    description: items[9]}
                 array.push(obj);
-            }
+            })
             return response.status(200).json(array);
         } else {
                 console.log(err);
@@ -160,11 +180,19 @@ async function getSize(req, response){
         }
         if (!err) {
             let array = [];
-           for(let i=0;i<res.rows.length;i++)
-            {
-                let obj = { name: res.rows[i][0], s_n: res.rows[i][1], category:  res.rows[i][2], ancillary_items:  res.rows[i][3], amount: res.rows[i][4], status: res.rows[i][5], precautions: res.rows[i][6], borrow_date: res.rows[i][7], return_date: res.rows[i][8]}
+            res.rows.map((items) => {
+                let obj = { name: items[0],
+                    s_n: items[1], 
+                    category:  items[2], 
+                    ancillary_items:  items[3], 
+                    amount: items[4], 
+                    status: items[5], 
+                    precautions: items[6], 
+                    borrow_date: items[7], 
+                    return_date: items[8], 
+                    description: items[9]}
                 array.push(obj);
-            }
+            })
             return response.status(200).json(array);
         } else {
                 console.log(err);
@@ -172,7 +200,6 @@ async function getSize(req, response){
         }
         });
     }
-
     async function getStudiosAndPodcasts(req, response) {
         const db = await connection();
         db.execute('select * from studio_podcast' , (err, res) => {
@@ -189,6 +216,36 @@ async function getSize(req, response){
                 }
                 array.push(obj)
             })
+            return response.status(200).json(array);
+        } else {
+            console.log(err);
+            response.status(400).json({ message: "Error" });
+        }
+    });
+    }
+
+    async function getItemSort(req, response) {
+        const db = await connection();
+        db.execute('SELECT * FROM items' , (err, res) => {
+        console.log(res);
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "Somting went wrong" });
+        }
+        if (!err) {
+            let array = [];
+            res.rows.map((items) => {
+                array.push(items)
+            })
+        c=0; // for the example, set c to sort the first column.
+        array.sort (function (a, b) 
+                    {
+                        if (a[c] === b[c]) 
+                        {
+                            return 0;
+                        } else {
+                            return (a[c] < b[c]) ? -1 : 1;
+                        }});
+            console.log(array);
             return response.status(200).json(array);
         } else {
             console.log(err);

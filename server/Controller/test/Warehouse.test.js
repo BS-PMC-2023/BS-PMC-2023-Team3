@@ -46,6 +46,21 @@
 //     });
 // });
 
+// describe("POST /warehouse/UpdateItem", () => {
+//   it("It should respond 'update successfully!'", async () => {
+//       const Item = await request(app).post("/warehouse/UpdateItem").send({
+//           STATUS: 'FAULTY',
+//           NAME: 'Sony A7III',
+//           S_N: '4476762',
+//           USERNAME: 'Yam123',
+//           DESCRIPTION : 'The lens is broken'
+//       });
+//       expect(Item.body.message).toBe("update successfully!");
+//       expect(Item.statusCode).toBe(200);
+
+// });
+// });
+
 // describe("DELETE /warehouse/deleteItem", () => {
 //     it("It should respond 'delete successfully!'", async () => {
 //         const Item = await request(app).post("/warehouse/deleteItem").send({
@@ -101,6 +116,23 @@
 //         expect(response.body[0]).toHaveProperty("return_date");
 //         expect(response.statusCode).toBe(200);
 //     });
+// });
+
+// describe("GET /warehouse/watchItems", () => {
+//   it("It should respond with an array of items", async () => {
+//       const response = await request(app).get("/warehouse/watchItems");
+//       expect(response.body[0]).toHaveProperty("name");
+//       expect(response.body[0]).toHaveProperty("s_n");
+//       expect(response.body[0]).toHaveProperty("category");
+//       expect(response.body[0]).toHaveProperty("ancillary_items");
+//       expect(response.body[0]).toHaveProperty("amount");
+//       expect(response.body[0]).toHaveProperty("status");
+//       expect(response.body[0]).toHaveProperty("precautions");
+//       expect(response.body[0]).toHaveProperty("borrow_date");
+//       expect(response.body[0]).toHaveProperty("return_date");
+//       expect(response.body[0]).toHaveProperty("description");
+//       expect(response.statusCode).toBe(200);
+//   });
 // });
 
 
