@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -24,12 +23,10 @@
     <!-- Style -->
     <link rel="stylesheet" href="css/stylehp.css" />
 
-    
-
     <title>HomePage</title>
   </head>
   <body>
-    <div class="site-mobile-menu site-navbar-target" >
+    <div class="site-mobile-menu site-navbar-target">
       <div class="site-mobile-menu-header">
         <div class="site-mobile-menu-close mt-3">
           <span class="icon-close2 js-menu-toggle"></span>
@@ -56,7 +53,6 @@
                 class="text-black site-menu-toggle js-menu-toggle py-5"
                 ><span class="icon-menu h3 text-white"></span></a
             ></span>
-            
 
             <nav
               class="site-navigation text-right ml-auto d-none d-lg-none"
@@ -67,7 +63,8 @@
                   <a href="HP.html" class="nav-link">דף בית</a>
                 </li>
                 <li>
-                  <a onclick="ChoosePage()" href="#" class="nav-link">איזור אישי</a
+                  <a onclick="ChoosePage()" href="#" class="nav-link"
+                    >איזור אישי</a
                   >
                 </li>
                 <li>
@@ -93,71 +90,62 @@
       </div>
     </header>
 
-    <div class="hero" style="background-image: url('images/HomepageP.png')">
-    
-
-    <div class="dropdown" >
-      <div class="notification_wrap">
-        <div class="notification_icon">
-          <i class="fas fa-bell "></i>
-          <span class="badge2" id = "numnoti"></span>
-        </div>
-        <div class="dropdown"id ="noti">
+    <div
+      class="hero"
+      style="
+        background-image: url('https://www.icopify.com/wp-content/uploads/2017/07/Communication-Visual-1140x445.jpg');
+      "
+    >
+      <div class="dropdown">
+        <div class="notification_wrap">
+          <div class="notification_icon">
+            <i class="fas fa-bell"></i>
+            <span class="badge2" id="numnoti"></span>
+          </div>
+          <div class="dropdown" id="noti"></div>
         </div>
       </div>
-    </div>
-    
-  
 
-      <div id="content" class="center" >
+      <div id="content" class="center">
         <ul>
-          <li >
-            <a href="HP.html" >דף בית</a>
+          <li>
+            <a href="HP.html">דף בית</a>
           </li>
           <li>
-            <a onclick="ChoosePage()" href="#" class="nav-link">איזור אישי</a
-            >
+            <a onclick="ChoosePage()" href="#" class="nav-link">איזור אישי</a>
           </li>
           <li>
-            <a href="tableitem.html"  id="items"
-              >פריטים</a
-            >
+            <a href="tableitem.html" id="items">פריטים</a>
           </li>
-          <li><a href="Podcast.html" >אולפנים</a></li>
-          <li><a href="tableitem.js" >קצת עלינו</a></li>
+          <li><a href="Podcast.html">אולפנים</a></li>
+          <li><a href="tableitem.js">קצת עלינו</a></li>
 
-          <li
-            onclick="clearSessionStorage() "
-            id = "logoutB"
-          >
+          <li onclick="clearSessionStorage() " id="logoutB">
             <span class="glyphicon glyphicon-remove"></span> התנתקות
           </li>
         </ul>
-        
-     </div>
+      </div>
     </div>
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-      $(document).ready(function(){
-        $(".notification_icon .fa-bell").click(function(){
+      $(document).ready(function () {
+        $(".notification_icon .fa-bell").click(function () {
           $(".dropdown").toggleClass("active");
           ReadNotifiction();
-        })
+        });
       });
     </script>
-<script>
-  window.addEventListener("DOMContentLoaded", function() {
-    var menuToggle = document.querySelector(".site-menu-toggle");
-    var siteNavigation = document.querySelector(".site-navigation");
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        var menuToggle = document.querySelector(".site-menu-toggle");
+        var siteNavigation = document.querySelector(".site-navigation");
 
-    // Open the navigation menu by default
-    menuToggle.classList.add("open");
-    siteNavigation.style.display = "block";
-  });
-</script>
-
-    
+        // Open the navigation menu by default
+        menuToggle.classList.add("open");
+        siteNavigation.style.display = "block";
+      });
+    </script>
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>

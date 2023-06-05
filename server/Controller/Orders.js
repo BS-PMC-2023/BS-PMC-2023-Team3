@@ -411,7 +411,8 @@ async function getAllOrderAccept(req, response) {
                 S_N: orders[2],
                 BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
                 RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
-                STATUS: orders[5]
+                STATUS: orders[5],
+                DAYS : getDays(orders[3].toLocaleDateString('he-IL').split('').join(''),orders[4].toLocaleDateString('he-IL').split('').join(''))
             }
             array.push(obj)
         })
@@ -441,7 +442,9 @@ async function getOrderForStatus(req, response) {
                 S_N: orders[2],
                 BORROW_DATE: orders[3].toLocaleDateString('he-IL').split('').join(''),
                 RETURN_DATE: orders[4].toLocaleDateString('he-IL').split('').join(''),
-                STATUS: orders[5]
+                STATUS: orders[5],
+                DAYS : getDays(orders[3].toLocaleDateString('he-IL').split('').join(''),orders[4].toLocaleDateString('he-IL').split('').join(''))
+
             }
             array.push(obj)
         })
