@@ -58,7 +58,7 @@
 // describe("POST /notification/UpdateToRead", () => {
 //     it("It should respond 'update successfully!'", async () => {
 //         const Item = await request(app).post("/notification/UpdateToRead").send({
-//             ASSOCIATION : 'Yam123'
+//             ASSOCIATION : 'Efrat123'
 //         });
 //         expect(Item.body.message).toBe("update successfully!");
 //         expect(Item.statusCode).toBe(200);
