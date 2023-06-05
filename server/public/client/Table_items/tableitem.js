@@ -1,10 +1,11 @@
 const itemsPerPage = 8;
 let currentPage = 1;
+var gsort =0;
 
 
 
 function pagenum(num){
-    table(num)
+    table(num,gsort)
 }
 function openFormorder() {
     document.getElementById("dateForm").style.display = "block";
@@ -81,7 +82,11 @@ async function deleteI(name , s_n , id ){
         document.getElementById(id).remove();
 }
 
-async function table(page) {
+async function table(page = 1,sort= 0) {
+    gsort =sort
+    page = currentPage
+    let body;
+    if (gsort == 0){
     //call for get to the url:
     let response = await fetch('http://localhost:3001/warehouse/watchItemForStatus?STATUS=IN', {
         //Get
@@ -91,10 +96,41 @@ async function table(page) {
         },
     })
     //get data from backend response as json!
-    let body = await response.json()
+    body = await response.json()
+    }
+    else if(gsort == 1){
+            //call for get to the url:
+        let response = await fetch('http://localhost:3001/warehouse/getItemSort', {
+            //Get
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        //get data from backend response as json!
+        body = await response.json()
+
+    }
+    else 
+    {      
+          //call for get to the url:
+             let response = await fetch('http://localhost:3001/warehouse/watchItemForCat?CATEGORY='+gsort, {
+                //Get
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            //get data from backend response as json!
+            body = await response.json()
+    
+
+    }
 
     // (C1) GET THE SOURCE & DESTINATION ELEMENTS
     var d = document.getElementById("12item");
+
+    console.log(gsort)
 
 const startIndex = (page - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
