@@ -36,6 +36,7 @@ async function UpdateItem(req, response) {
     }
     db.execute(sql, val, (err, res) => {
         if (err) {
+            console.log(err)
            return response.status(400).json({ message: "Something went wrong" });
         } else 
             if(res.rowsAffected > 0)

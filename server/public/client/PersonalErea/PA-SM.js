@@ -83,6 +83,7 @@ async function showProfile() {
             </div>
             <div class="bio-chart">
               <div style="display: inline; width: 100px; height: 100px">
+              <p> :ימים שנותרו</p>
                 <canvas width="100" height="100px"></canvas>
                 <input
                   class="knob"
@@ -90,7 +91,7 @@ async function showProfile() {
                   data-height="100"
                   data-displayprevious="true"
                   data-thickness=".2"
-                  value=" ${item.DAYS}"
+                  value="${item.DAYS}"
                   data-fgcolor="#e06b7d"
                   data-bgcolor="#e8e8e8"
                   style="
@@ -159,6 +160,7 @@ const itemHtml = `
     <div class="bio-desk">
     <h4 class="red">${item.name}:שם הפריט</h4>
     <p>${item.s_n}:מקט הפריט</p>
+    <p>תיאור התקלה: ${item.description}</p>
   </div>
       <div class="bio-chart">
       <button class="button-14" role="button" onclick="updateStatusToIn('${item.name}','${item.s_n}','IN')">Proper</button>
@@ -170,7 +172,6 @@ const itemHtml = `
             data-height="100"
             data-displayprevious="true"
             data-thickness=".2"
-            value = "16"
             data-fgcolor="#e06b7d"
             data-bgcolor="#e8e8e8"
             style="
@@ -279,6 +280,7 @@ async function showItem() {
             <button class="button-14" role="button" onclick="updateOrderStatus('${item.USERNAME}', '${item.NAMEITEM}', '${item.S_N}', '${item.BORROW_DATE}', 'Accept')">Accept</button>
             <button class="button-14" role="button" onclick="updateOrderStatus('${item.USERNAME}', '${item.NAMEITEM}', '${item.S_N}', '${item.BORROW_DATE}', 'Reject')">Reject</button>
             <div style="display: inline; width: 100px; height: 100px">
+            <p> :ימים שנותרו</p>
               <canvas width="100" height="100px"></canvas>
               <input
                 class="knob"

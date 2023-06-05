@@ -71,8 +71,13 @@ const itemHtml = `
     <p>${item.RETURN_DATE}:תאריך החזרה</p>
   </div>
       <div class="bio-chart">
-      <button class="button-14" role="button" onclick="updateStatusItem('${item.NAMEITEM}','${item.S_N}','FAULTY')">Report</button>
+      <button class="button-14" role="button" onclick="openReportForm('${item.NAMEITEM}','${item.S_N}','FAULTY')">Report</button>
+      <form id="reportForm_${item.S_N}" style="display: none;">
+                <textarea id="reportText_${item.S_N}" rows="4" cols="50"></textarea>
+                <button onclick="submitReport('${item.NAMEITEM}','${item.S_N}')">Submit</button>
+              </form>
         <div style="display: inline; width: 100px; height: 100px">
+        <p> :ימים שנותרו</p>
           <canvas width="100" height="100px"></canvas
           ><input
             class="knob"
@@ -114,15 +119,22 @@ const itemHtml = `
 });
 }
 
-async function updateStatusItem(nameitem,s_n,status) {
-  const username = sessionStorage.username
+function openReportForm(nameitem, s_n) {
+  // Show the report form based on the serial number
+  const form = document.getElementById(`reportForm_${s_n}`);
+  form.style.display = "block";
+}
 
+async function submitReport(nameitem, s_n) {
+  const username = sessionStorage.username;
+  const reportText = document.getElementById(`reportText_${s_n}`).value;
 
   let requestBody = {
-    USERNAME:username,
+    USERNAME: username,
     NAME: nameitem,
     S_N: s_n,
-    STATUS: status
+    STATUS: "FAULTY",
+    DESCRIPTION: reportText
   };
 
   // Call the UpdateStatusOrderPS endpoint
