@@ -27,12 +27,12 @@
   text-align: center;
 }
 .center .title{
-  color: black;
+  color: #fff;
   font-size: 55px;
   font-weight: 600;
 }
 .center .sub_title{
-  color: black;
+  color: #fff;
   font-size: 52px;
   font-weight: 600;
 }
@@ -55,7 +55,7 @@
   transition: all 0.3s ease;
 }
 .center .btns button:first-child{
-  color: black;
+  color: #fff;
   background: none;
 }
 .btns button:first-child:hover{
@@ -64,7 +64,7 @@
 }
 .center .btns button:last-child{
   background: none;
-  color: black;
+  color: white;
 }
 .btns button:last-child:hover{
     background: white;
