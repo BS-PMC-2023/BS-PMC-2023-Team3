@@ -18,8 +18,9 @@ document.getElementById('items').addEventListener('click', function() {
     })
     //get data from backend response as json!
     let body = await response.json();
-    if(body.message)
-        alert(body.message);
+    if(body.message){
+        
+    }
     else{
         body.forEach((item) => {
             const itemHtml = `
@@ -48,8 +49,10 @@ async function notificationManager(){
     })
     //get data from backend response as json!
     let body = await response.json();
-    if(body.message)
-        alert(body.message);
+    if(body.message){
+
+    }
+       
     else{
         body.forEach((item) => {
             const itemHtml = `
@@ -123,8 +126,9 @@ async function ReadNotifiction(){
     })
     //get data from backend response as json!
     let body = await response.json();
-    if(body.message != "update successfully!" )
-        alert(body.message);
+    if(body.message != "update successfully!" ) {
+
+    }
 }
 
 
