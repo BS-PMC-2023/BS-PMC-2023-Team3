@@ -10,6 +10,7 @@ router.get('/watchItemForCat', getItemForCat);
 router.get('/watchItemForStatus', getItemForStatus);
 router.get('/getsize', getSize);
 router.get('/getAllPS', getStudiosAndPodcasts);
+router.get('/getItemSort', getItemSort);
 
 
 async function UpdateItem(req, response) {
@@ -192,6 +193,36 @@ async function getSize(req, response){
                 }
                 array.push(obj)
             })
+            return response.status(200).json(array);
+        } else {
+            console.log(err);
+            response.status(400).json({ message: "Error" });
+        }
+    });
+    }
+
+    async function getItemSort(req, response) {
+        const db = await connection();
+        db.execute('SELECT * FROM items' , (err, res) => {
+        console.log(res);
+        if (res.rows.length == 0) {
+            return response.status(400).json({ message: "Somting went wrong" });
+        }
+        if (!err) {
+            let array = [];
+            res.rows.map((items) => {
+                array.push(items)
+            })
+        c=0; // for the example, set c to sort the first column.
+        array.sort (function (a, b) 
+                    {
+                        if (a[c] === b[c]) 
+                        {
+                            return 0;
+                        } else {
+                            return (a[c] < b[c]) ? -1 : 1;
+                        }});
+            console.log(array);
             return response.status(200).json(array);
         } else {
             console.log(err);
