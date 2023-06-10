@@ -30,6 +30,12 @@ app.get('/Connected', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/client/HomePage/HP.html'));
 });
 
+//? AboutUs
+app.use(express.static(path.join(__dirname, '/public/client/HomePage')))
+app.get('/AboutUs', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/client/HomePage/AboutUs.html'));
+});
+
 //? Login Page
 app.use(express.static(path.join(__dirname, '/public/client/LoginPage')))
 app.get('/login', function (req, res) {
