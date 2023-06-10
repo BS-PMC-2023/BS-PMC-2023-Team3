@@ -98,6 +98,10 @@ async function ChoosePage() {
 	}
   }
 
+  async function AboutUS() { 
+	window.location.href = "http://localhost:3001/AboutUs";
+  } 
+
   function clearSessionStorage() {
 	sessionStorage.clear();
 	window.location.href = "http://localhost:3001/login";
