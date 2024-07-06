@@ -7,7 +7,7 @@ pipeline {
     stage('Install Dependencies') {
         agent {
             docker {
-                image 'node:16-alpine'
+                image 'python:3.10.0a7-alpine3.13'
             }
         }
         steps {
