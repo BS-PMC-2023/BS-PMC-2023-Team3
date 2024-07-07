@@ -7,7 +7,7 @@ pipeline {
     stage('Install Dependencies') {
         agent {
             docker {
-                image 'node:16-alpine'
+                image 'node:lts'
             }
         }
         steps {
@@ -19,7 +19,7 @@ pipeline {
     stage('Run Jest Tests') {
         agent {
             docker {
-                image 'node:16-alpine'
+                image 'node:lts'
             }
         }
         steps {
@@ -29,7 +29,7 @@ pipeline {
     stage('Run integration Tests') {
         agent {
             docker {
-                image 'node:16-alpine'
+                image 'node:18'
             }
         }
         steps {
@@ -39,7 +39,7 @@ pipeline {
     stage('coverage') {
         agent {
             docker {
-                image 'node:16-alpine'
+                image 'node:lts'
             }
         }
         steps {
